@@ -328,7 +328,7 @@ window.addEventListener("DOMContentLoaded", () => {
   function upsertRecent(entry) {
     const list = loadList(LS_RECENT);
     const key = riotIdKey(entry?.riotId);
-    const next = [entry, ...list.filter((x) => riotIdKey(x.riotId) !== key)].slice(0, 30);
+    const next = [entry, ...list.filter((x) => riotIdKey(x.riotId) !== key)].slice(0, 10);
     saveList(LS_RECENT, next);
   }
 
@@ -345,7 +345,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const cleaned = fav.filter((x) => riotIdKey(x.riotId) !== key);
 
     if (on) {
-      const next = [entry, ...cleaned].slice(0, 50);
+      const next = [entry, ...cleaned].slice(0, 10);
       saveList(LS_FAV, next);
     } else {
       saveList(LS_FAV, cleaned);
@@ -797,11 +797,12 @@ window.addEventListener("DOMContentLoaded", () => {
       wrap = document.createElement("div");
       wrap.id = "moreWrap";
       wrap.className = "more-wrap";
-      wrap.innerHTML = `
-        <button type="button" id="moreBtn" class="more-btn">もっと見る</button>
-      `;
+      wrap.innerHTML = `<button type="button" id="moreBtn" class="more-btn">もっと見る</button>`;
       matchesEl.appendChild(wrap);
     }
+
+    matchesEl.appendChild(wrap);
+
     const btn = wrap.querySelector("#moreBtn");
     return { wrap, btn };
   }

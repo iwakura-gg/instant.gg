@@ -60,17 +60,12 @@ body {
   text-decoration: none;
 }
 
-.brand-link:hover {
-  text-decoration: underline;
-}
-
 .search {
   display: flex;
   gap: 10px;
   align-items: center;
   width: min(640px, 100%);
   position: relative;
-  /* ドロップダウン用 */
 }
 
 #riotId {
@@ -121,15 +116,14 @@ body {
 }
 
 /* =========================
-   Search panel (最近/お気に入り)
-   ========================= */
+  　　(最近/お気に入り)
+========================= */
 .search-panel {
   position: absolute;
   left: 0;
   right: 0;
   top: calc(100% + 10px);
   z-index: 50;
-
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, .10);
   background: rgba(15, 20, 30, .92);
@@ -139,7 +133,6 @@ body {
 
 .sp-head {
   display: none;
-  /* モバイルだけ表示 */
   gap: 10px;
   padding: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, .08);
@@ -196,12 +189,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 10px 10px;
-  border-radius: 12px;
+  gap: 6px;
+  padding: 6px 6px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, .08);
   background: rgba(0, 0, 0, .10);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .sp-row:hover {
@@ -2117,4 +2110,66 @@ body {
     margin-left: 0;
     /* 左に押し出す癖がある場合の相殺 */
   }
+}
+
+/* =========================
+   Mobile: make footer sit below a full-height home page
+   ========================= */
+@media (max-width: 640px) {
+
+  /* ホームは「画面いっぱい」使ってOK（footer分を引かない） */
+  .page.home {
+    min-height: 100vh;
+    justify-content: center;
+    padding-bottom: 16px;
+    /* ほんの少し余白（任意） */
+  }
+
+  /* footerは別枠で下に置く（見切れてもスクロールで見える） */
+  .footer {
+    position: static;
+  }
+}
+
+/* =========================================
+   Search panel: match height with DUO card
+   - cap panel height
+   - scroll inside lists
+   ========================================= */
+
+/* PC〜タブレット（=検索パネルが2カラムのとき） */
+.search-panel {
+  max-height: 240px;
+  /* ←DUOと同じくらいに。好みで調整 */
+  overflow: hidden;
+  /* パネル自体ははみ出さない */
+}
+
+/* 中身（左右カラム）をスクロールさせる */
+.search-panel .sp-grid {
+  height: 100%;
+}
+
+.search-panel .sp-col {
+  max-height: 240px;
+  /* 上と同じ値 */
+  overflow: auto;
+  /* ここがスクロール */
+  padding-right: 8px;
+  /* スクロールバー分 */
+}
+
+/* 検索パネル：スクロールバーを隠す（スクロールは可能） */
+.sp-col {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* 旧Edge/IE */
+}
+
+.sp-col::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+  /* Chrome/Safari */
 }

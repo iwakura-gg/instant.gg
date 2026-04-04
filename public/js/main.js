@@ -925,7 +925,22 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function tierIconSrc(entry) {
     const t = entry?.tier ? String(entry.tier).toLowerCase() : "unranked";
-    return `/rank-icons/${t}.png`;
+
+    const rankMap = {
+      unranked: "/rank-icons/128/00_unranked_128.png",
+      iron: "/rank-icons/128/01_iron_128.png",
+      bronze: "/rank-icons/128/02_bronze_128.png",
+      silver: "/rank-icons/128/03_silver_128.png",
+      gold: "/rank-icons/128/04_gold_128.png",
+      platinum: "/rank-icons/128/05_platinum_128.png",
+      emerald: "/rank-icons/128/06_emerald_128.png",
+      diamond: "/rank-icons/128/07_diamond_128.png",
+      master: "/rank-icons/128/08_master_128.png",
+      grandmaster: "/rank-icons/128/09_grandmaster_128.png",
+      challenger: "/rank-icons/128/10_challenger_128.png",
+    };
+
+    return rankMap[t] || rankMap.unranked;
   }
 
   // ✅ side全体を上書きしない（rankHostだけ更新）

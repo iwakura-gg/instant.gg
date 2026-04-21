@@ -1,0 +1,2175 @@
+:root {
+  --bg: #0a1428;
+  --text: #eaeaea;
+  --muted: rgba(234, 234, 234, .70);
+
+  --card: rgba(255, 255, 255, .06);
+  --stroke: rgba(255, 255, 255, .10);
+
+  --winA: rgba(35, 85, 210, .35);
+  --winB: rgba(35, 85, 210, .12);
+  --loseA: rgba(210, 55, 75, .32);
+  --loseB: rgba(210, 55, 75, .10);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ① タブレットくらいの幅にして中央寄せ */
+.page {
+  max-width: 980px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+  flex: 1;
+}
+
+/* ===== top ===== */
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.brand {
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: .2px;
+}
+
+.brand-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.search {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: min(640px, 100%);
+  position: relative;
+}
+
+#riotId {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, .06);
+  color: var(--text);
+  outline: none;
+}
+
+#riotId:focus {
+  border-color: rgba(90, 160, 255, .60);
+  box-shadow: 0 0 0 3px rgba(90, 160, 255, .18);
+}
+
+#load {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(90, 160, 255, .90);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  transition: filter .12s ease, transform .12s ease;
+}
+
+#load:hover {
+  filter: brightness(1.05);
+}
+
+#load:active {
+  transform: translateY(1px);
+}
+
+#status {
+  margin: 10px 0;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+#matches {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* =========================
+  　　(最近/お気に入り)
+========================= */
+.search-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 50;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(15, 20, 30, .92);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .38);
+  overflow: hidden;
+}
+
+.sp-head {
+  display: none;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(0, 0, 0, .12);
+}
+
+.sp-tab {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(255, 255, 255, .05);
+  color: rgba(234, 234, 234, .85);
+  font-weight: 900;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.sp-tab.is-active {
+  border-color: rgba(90, 160, 255, .55);
+  background: rgba(90, 160, 255, .16);
+  color: rgba(255, 255, 255, .96);
+}
+
+.sp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.sp-col {
+  padding: 12px;
+  min-height: 120px;
+}
+
+.sp-col+.sp-col {
+  border-left: 1px solid rgba(255, 255, 255, .08);
+}
+
+.sp-title {
+  font-weight: 900;
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: rgba(234, 234, 234, .9);
+}
+
+.sp-empty {
+  color: rgba(234, 234, 234, .62);
+  font-weight: 800;
+  font-size: 12px;
+  padding: 20px 6px;
+  text-align: center;
+}
+
+.sp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(0, 0, 0, .10);
+  margin-bottom: 4px;
+}
+
+.sp-row:hover {
+  background: rgba(255, 255, 255, .06);
+}
+
+.sp-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  min-width: 0;
+  text-align: left;
+}
+
+.sp-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, .14);
+  color: rgba(255, 255, 255, .92);
+}
+
+.sp-badge-empty {
+  background: transparent;
+}
+
+.sp-name {
+  font-weight: 900;
+  font-size: 13px;
+  max-width: 220px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sp-tag {
+  color: rgba(234, 234, 234, .70);
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.sp-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+/* 検索パネル内の★（箱あり） */
+.sp-star {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(0, 0, 0, .12);
+  border-radius: 10px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.sp-star::before {
+  content: "★";
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(255, 255, 255, .30);
+}
+
+.sp-star.is-on::before {
+  color: rgba(255, 220, 80, .98);
+}
+
+.sp-del,
+.sp-unfav {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(0, 0, 0, .12);
+  color: rgba(234, 234, 234, .75);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+/* =========================
+   summary
+   ========================= */
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  margin: 14px 0 10px;
+}
+
+.profile-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+}
+
+.summary-right {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ✅ 名前 + ★：空白1つ分（軽く） */
+.summary-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.summary-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fav-star {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(0, 0, 0, .12);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.fav-star::before {
+  content: "★";
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(255, 255, 255, .30);
+  /* OFF: 白っぽい */
+}
+
+.fav-star.is-on::before {
+  color: rgba(255, 220, 80, .98);
+  /* ON: 黄 */
+}
+
+.fav-star:hover {
+  background: rgba(255, 255, 255, .06);
+}
+
+.summary-sub {
+  margin-top: 6px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, .04);
+}
+
+/* =========================
+   ★ 見た目の中心調整（重要）
+   - 左に1px / 上に1px（あなたの要望）
+   ========================= */
+.sp-star::before,
+.fav-star::before {
+  display: block;
+  transform: translate(-1px, 0px);
+}
+
+/* =========================
+   card
+   ========================= */
+.game-card {
+  border-radius: 12px;
+  border: 1px solid var(--stroke);
+  overflow: hidden;
+}
+
+.game-card.win {
+  background: linear-gradient(90deg, var(--winA), var(--winB));
+  border-left: 6px solid rgba(40, 100, 255, .95);
+}
+
+.game-card.lose {
+  background: linear-gradient(90deg, var(--loseA), var(--loseB));
+  border-left: 6px solid rgba(255, 70, 70, .95);
+}
+
+.game-card.live {
+  background: rgba(255, 255, 255, .06);
+  border-left: 6px solid rgba(255, 213, 74, .85);
+}
+
+/* ✅ Remake（リメイク） */
+.game-card.remake {
+  border-left: 6px solid rgba(70, 75, 85, .95);
+  background: linear-gradient(90deg, rgba(0, 0, 0, .26), rgba(255, 255, 255, .06));
+}
+
+.game-card.remake .card-top,
+.game-card.remake .g-meta,
+.game-card.remake .g-main,
+.game-card.remake .g-stats {
+  background: transparent;
+}
+
+.card-top {
+  display: flex;
+  min-height: 92px;
+}
+
+/* left meta */
+.g-meta {
+  width: 75px;
+  padding: 10px 10px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.g-queue {
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.g-ago {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.g-result {
+  margin-top: auto;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.g-duration {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* main */
+.g-main {
+  flex: 1;
+  padding: 10px 6px 10px 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.champ-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.champ-icon-box {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+}
+
+.champ-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+}
+
+.champ-lv {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, .35);
+  background: rgba(0, 0, 0, .40);
+}
+
+/* SR block */
+.sr-box {
+  display: flex;
+  gap: 6px;
+}
+
+.sr-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.icon18 {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+}
+
+.icon18.ph {
+  display: inline-block;
+  opacity: .18;
+  border: 1px solid rgba(255, 255, 255, .25);
+  background: rgba(0, 0, 0, .20);
+}
+
+.icon22 {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+}
+
+.kda {
+  min-width: 65px;
+}
+
+.kda-line {
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.kda-sub {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* items */
+.items {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-left: 6px;
+}
+
+.item-slot {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(0, 0, 0, .15);
+  overflow: hidden;
+}
+
+.item-slot img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* stats right */
+.g-stats {
+  width: 132px;
+  padding: 10px 10px 10px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.stat {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.stat strong {
+  color: var(--text);
+}
+
+.chev {
+  margin-top: auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(0, 0, 0, .12);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.chev:hover {
+  background: rgba(255, 255, 255, .06);
+}
+
+/* details */
+.details {
+  border-top: 1px solid rgba(255, 255, 255, .10);
+  padding: 10px 12px 12px;
+  background: rgba(8, 18, 40, .45);
+}
+
+.details-loading {
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+/* team list */
+.team-wrap {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.team-col {
+  flex: 1;
+  min-width: 280px;
+}
+
+.team-title {
+  font-weight: 900;
+  margin: 0 0 8px;
+  font-size: 13px;
+  opacity: .95;
+}
+
+.team-col.blue .team-title {
+  color: rgba(140, 190, 255, .95);
+}
+
+.team-col.red .team-title {
+  color: rgba(255, 150, 165, .95);
+}
+
+.team-row {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  align-items: center;
+  gap: 10px;
+
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(0, 0, 0, .10);
+  margin-bottom: 8px;
+
+  text-decoration: none;
+  color: inherit;
+}
+
+.team-row:hover {
+  background: rgba(255, 255, 255, .06);
+}
+
+.team-row.me {
+  border-color: rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .07);
+}
+
+.team-col.blue .team-row {
+  border-left: 3px solid rgba(80, 150, 255, .55);
+}
+
+.team-col.red .team-row {
+  border-left: 3px solid rgba(255, 110, 130, .55);
+}
+
+.team-name {
+  font-weight: 900;
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* LIVE展開：名前右にランク（PC） */
+.team-row.has-rank {
+  grid-template-columns: 22px 1fr auto;
+}
+
+.team-row.has-rank .team-rank {
+  justify-self: end;
+  text-align: right;
+  font-size: 12px;
+  opacity: .85;
+  white-space: nowrap;
+}
+
+/* footer */
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(0, 0, 0, .10);
+}
+
+.footer-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 14px 16px;
+}
+
+.footer-legal {
+  font-size: 11px;
+  line-height: 1.55;
+  color: rgba(234, 234, 234, .65);
+}
+
+/* home only center */
+.page.home {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.page.home .top {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.page.home .brand {
+  font-size: 34px;
+}
+
+.page.home .search {
+  width: min(720px, 100%);
+}
+
+.page.home #summary,
+.page.home #matches {
+  display: none;
+}
+
+/* view切替 */
+[hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   Mobile rules
+   - 統合版：max-width:640px
+   ========================================================= */
+@media (max-width: 640px) {
+
+  /* ✅ 1列：Instant.gg + 検索窓 + ボタン */
+  .top {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand {
+    font-size: 16px;
+    flex: 0 0 auto;
+  }
+
+  .search {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  #riotId {
+    min-width: 0;
+    padding: 10px 12px;
+  }
+
+  #load {
+    width: auto;
+    /* ← 100%をやめる */
+    flex: 0 0 auto;
+    padding: 10px 12px;
+    white-space: nowrap;
+  }
+
+  /* 検索パネル：タブ切り替え */
+  .sp-head {
+    display: flex;
+  }
+
+  .sp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-col+.sp-col {
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+  }
+
+  .search-panel[data-tab="recent"] .sp-col[data-col="fav"] {
+    display: none;
+  }
+
+  .search-panel[data-tab="fav"] .sp-col[data-col="recent"] {
+    display: none;
+  }
+
+  /* summary：縦並び */
+  .summary-sub {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* LIVE展開：スマホは下に回す（LIVEだけ） */
+  .game-card.live .details .team-row.has-rank {
+    grid-template-columns: 22px 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .game-card.live .details .team-row.has-rank .team-rank {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+    text-align: left;
+    margin-top: 2px;
+    font-size: 11px;
+    opacity: .75;
+    white-space: nowrap;
+  }
+
+  /* team list：縦に */
+  .team-wrap {
+    flex-direction: column;
+  }
+
+  .team-col {
+    min-width: 0;
+  }
+
+  .team-row {
+    padding: 7px 9px;
+  }
+
+  .team-name {
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   Mobile(<=640px)
+   - 履歴：3カラム4行（あなたの最終要望レイアウト）
+   ========================================================= */
+@media (max-width: 640px) {
+
+  /* 共通：サイズ調整 */
+  .card-top {
+    min-height: 0;
+  }
+
+  .champ-icon-box {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+  }
+
+  .champ-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .champ-lv {
+    font-size: 11px;
+    padding: 2px 6px;
+    right: -5px;
+    bottom: -5px;
+  }
+
+  .icon18 {
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+  }
+
+  .sr-box {
+    gap: 5px;
+  }
+
+  .sr-col {
+    gap: 3px;
+  }
+
+  /* いったん全カード共通のアイテム並び（履歴側で上書きあり） */
+  .items {
+    flex-wrap: nowrap;
+    gap: 4px;
+    margin-left: auto;
+    justify-content: flex-end;
+  }
+
+  .item-slot {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+  }
+
+  .item-slot img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .chev {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    font-size: 14px;
+  }
+
+  /* ===== 履歴カード（スマホ配置） ===== */
+  .game-card:not(.live) .card-top {
+    display: grid !important;
+    grid-template-columns: 82px 1fr 92px;
+    align-items: center;
+    gap: 8px 10px;
+    padding: 10px 10px 12px;
+    min-height: 0;
+  }
+
+  /* ✅ contents をやめて、各ブロックを「そのまま」置く */
+  .game-card:not(.live) .g-meta,
+  .game-card:not(.live) .g-main,
+  .game-card:not(.live) .g-stats {
+    display: flex !important;
+  }
+
+  /* 左メタ（キュー/時間/勝敗/試合時間） */
+  .game-card:not(.live) .g-meta {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    padding: 0;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* 中央（チャンプ+スペル/ルーン+KDA+アイテム） */
+  .game-card:not(.live) .g-main {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 0;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ✅ KDAを消さない */
+  .game-card:not(.live) .kda {
+    display: block !important;
+  }
+
+  /* アイテム：KDAの隣に寄せる */
+  .game-card:not(.live) .items {
+    margin-left: 6px !important;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  /* 右（KP/CS + ▾ボタン） */
+  .game-card:not(.live) .g-stats {
+    grid-column: 3;
+    grid-row: 1;
+    width: auto;
+    padding: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    gap: 4px;
+  }
+
+  .game-card:not(.live) .chev {
+    margin-top: auto;
+  }
+}
+
+/* さらに狭い幅：見切れ防止 */
+@media (max-width: 430px) {
+  .game-card:not(.live) .card-top {
+    grid-template-columns: 74px 1fr 78px;
+    gap: 6px 8px;
+    padding: 10px 8px 12px;
+  }
+
+  .game-card:not(.live) .stat {
+    font-size: 10px;
+  }
+
+  .game-card:not(.live) .items {
+    gap: 3px;
+  }
+
+  .game-card:not(.live) .item-slot {
+    width: 20px;
+    height: 20px;
+    border-radius: 7px;
+  }
+
+  .game-card:not(.live) .item-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 380px) {
+  .game-card:not(.live) .card-top {
+    grid-template-columns: 70px 1fr 72px;
+    gap: 5px 6px;
+    padding: 9px 8px 11px;
+  }
+
+  .game-card:not(.live) .g-queue,
+  .game-card:not(.live) .g-result {
+    font-size: 11px;
+  }
+
+  .game-card:not(.live) .items {
+    gap: 2px;
+  }
+
+  .game-card:not(.live) .item-slot {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+  }
+
+  .game-card:not(.live) .item-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.more-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 2px;
+}
+
+.more-btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(255, 255, 255, .06);
+  color: rgba(234, 234, 234, .92);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.more-btn:hover {
+  background: rgba(255, 255, 255, .09);
+}
+
+.more-btn:disabled {
+  opacity: .65;
+  cursor: default;
+}
+
+/* =========================
+   Result layout v2（希望の形）
+   - summaryは全幅
+   - その下だけ 左：新要素 / 右：LIVE+履歴
+   ========================= */
+.page.result {
+  max-width: 980px;
+  /* ← プロフィール幅は固定（元の幅感） */
+}
+
+/* summary + side + matches を1つのグリッドにする */
+.page.result .result-grid {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 12px 14px;
+  align-items: start;
+}
+
+/* summaryは2カラムぶち抜き */
+.page.result #summary {
+  grid-column: 1 / -1;
+}
+
+/* 左の新要素 */
+.page.result #side {
+  grid-column: 1;
+  top: 16px;
+}
+
+/* 右のLIVE+履歴 */
+.page.result #matches {
+  grid-column: 2;
+}
+
+/* スマホは1カラムに落とす（上：summary → side → matches） */
+@media (max-width: 900px) {
+  .page.result .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page.result #summary,
+  .page.result #side,
+  .page.result #matches {
+    grid-column: 1;
+  }
+
+  .page.result #side {
+    position: static;
+  }
+}
+
+/* =========================
+   左サイドカード
+   ========================= */
+.side-card {
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  padding: 10px 10px 12px 10px;
+}
+
+.side-title {
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(234, 234, 234, .75);
+  letter-spacing: .2px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.rank-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 2px 0px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(0, 0, 0, .10);
+  margin-bottom: 6px;
+}
+
+/* ✅ JSの inline style を消した分をCSSで吸収 */
+.rank-row:last-child {
+  margin-bottom: 0;
+}
+
+.rank-emblem {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  background: rgba(0, 0, 0, .18);
+  flex: 0 0 auto;
+}
+
+.rank-lines {
+  min-width: 0;
+}
+
+.rank-queue {
+  font-weight: 900;
+  font-size: 12px;
+  opacity: .9;
+  margin-bottom: 2px;
+}
+
+.rank-main {
+  font-weight: 900;
+  font-size: 13px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.rank-sub {
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(234, 234, 234, .70);
+  margin-top: 2px;
+}
+
+/* =========================
+   PC：カード内部を少し詰めて
+   アイテムがKP/CSに被らないようにする
+   ========================= */
+@media (min-width: 761px) {
+
+  /* 左メタを少し細く */
+  .g-meta {
+    width: 75px;
+    padding: 10px 8px 10px 10px;
+  }
+
+  /* 右statsも少し細くして、中央に幅を返す */
+  .g-stats {
+    width: 50px;
+    padding: 10px 10px 10px 8px;
+  }
+
+  /* 中央を全体的に詰める */
+  .g-main {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  /* チャンプ+SRブロックを少し詰める */
+  .champ-wrap {
+    gap: 8px;
+  }
+
+  .champ-icon-box {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+  }
+
+  .champ-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+  }
+
+  .sr-box {
+    gap: 4px;
+  }
+
+  .sr-col {
+    gap: 3px;
+  }
+
+  .icon18 {
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+  }
+
+  /* KDAの横幅も少し削る */
+  .kda {
+    min-width: 65px;
+  }
+
+  .kda-line {
+    font-size: 15px;
+  }
+
+  /* アイテムを「左に戻す」＆小さくして確実に収める */
+  .items {
+    margin-left: 0;
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+
+  .item-slot {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+
+  .item-slot img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+/* ===== Result：左(side)と右(matches)の開始位置を揃える ===== */
+@media (min-width: 761px) {
+  .result-grid {
+    align-items: start;
+  }
+
+  .result-grid #matches {
+    margin-top: 0 !important;
+  }
+
+  .result-grid #side {
+    margin-top: 0 !important;
+  }
+}
+
+#sideRankHost {
+  margin-bottom: 12px;
+}
+
+/* =========================
+   FIX: 760付近でLIVE展開のチャンプが右にズレすぎるのを防ぐ
+   - 以前追加した .details の左padding調整を無効化
+   ========================= */
+@media (min-width: 641px) and (max-width: 760px) {
+  .game-card.live .details {
+    padding-left: 12px;
+    /* 元の .details と同じ */
+  }
+}
+
+/* =========================
+   <=760px：LIVEカードのヘッダーも履歴と同じ3カラムにして開始位置を揃える
+   ========================= */
+@media (max-width: 760px) {
+  .game-card.live .card-top {
+    display: grid !important;
+    grid-template-columns: 82px 1fr 92px;
+    /* 履歴と同じ */
+    align-items: center;
+    gap: 8px 10px;
+    padding: 10px 10px 12px;
+    min-height: 0;
+  }
+
+  .game-card.live .g-meta,
+  .game-card.live .g-main,
+  .game-card.live .g-stats {
+    display: flex !important;
+  }
+
+  .game-card.live .g-meta {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    padding: 0;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .game-card.live .g-main {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 0;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .game-card.live .g-stats {
+    grid-column: 3;
+    grid-row: 1;
+    width: auto;
+    padding: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    gap: 4px;
+  }
+
+  .game-card.live .chev {
+    margin-top: auto;
+  }
+}
+
+/* =========================================================
+   Tablet(641-900)：右カラムを約60%に縮めて、アイテムを1列固定
+   ========================================================= */
+@media (min-width: 641px) and (max-width: 900px) {
+
+  /* 右（KP/CS/経過 + ▾）の取りすぎを抑える */
+  .game-card .g-stats {
+    width: 112px;
+    padding: 10px 6px 10px 4px;
+  }
+
+  /* 履歴カード：アイテムを2段にしない */
+  .game-card:not(.live) .items {
+    flex-wrap: nowrap;
+    /* 1列固定 */
+    gap: 4px;
+    /* 少し詰める */
+  }
+
+  /* 1列固定をより安定させる（アイテムが縮んだり折り返し判定しづらくする） */
+  .game-card:not(.live) .item-slot {
+    flex: 0 0 28px;
+  }
+}
+
+/* サモナーネームが長いときだけ 2px 小さく */
+.summary-title.is-long-name {
+  font-size: 16px;
+}
+
+/* 18 → 16 */
+
+.team-name.is-long-name {
+  font-size: 10px;
+}
+
+/* 12 → 10 */
+
+/* 640以下では team-name が 13px になるので 1px減 */
+@media (max-width: 640px) {
+  .team-name.is-long-name {
+    font-size: 11px;
+  }
+
+  /* 13 → 11 */
+}
+
+@media (max-width: 640px) {
+
+  /* LIVE/詳細の 1行化 */
+  .team-row.has-rank {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .team-row.has-rank .team-name {
+    flex: 1;
+    min-width: 0;
+    /* 省略のため必須 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .team-row.has-rank .team-rank {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 640px) {
+
+  /* g-mainを折り返し可能に */
+  .g-main {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* 上段：キャラ＋KDA */
+  .champ-wrap,
+  .kda {
+    flex: 0 0 auto;
+  }
+
+  /* アイテムを2行目に */
+  .items {
+    flex: 0 0 100%;
+    margin-top: 6px;
+  }
+
+}
+
+
+/* スマホレイアウト用 */
+
+/* ===========================
+   📱 420px以下は強制2行レイアウト
+   =========================== */
+@media (max-width: 420px) {
+
+  /* メイン部分をGrid化 */
+  .g-main {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "champ kda"
+      "items items";
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 6px;
+  }
+
+  /* 各エリア割り当て */
+  .champ-wrap {
+    grid-area: champ;
+  }
+
+  .kda {
+    grid-area: kda;
+    text-align: left;
+    justify-self: start;
+  }
+
+  .items {
+    grid-area: items;
+    margin-top: 2px;
+  }
+
+  /* 横幅計算の事故防止 */
+  .champ-wrap,
+  .kda,
+  .items {
+    min-width: 0;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  /* 1カラム縦積み＆全幅に伸ばす */
+  #resultGrid,
+  .result-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    /* ←全幅化の要 */
+    width: 100%;
+  }
+
+  /* 子要素も全幅に固定（縮み防止） */
+  #summary,
+  #matches,
+  #side,
+  #sideRankHost,
+  #sideDuoHost {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* #side を“消して”、中身を #resultGrid 直下として扱う（順番制御のため） */
+  #side {
+    display: contents;
+  }
+
+  /* 並び順：プロフィール → ランク → LIVE/履歴 → DUO */
+  #summary {
+    order: 1;
+  }
+
+  #sideRankHost {
+    order: 2;
+  }
+
+  #matches {
+    order: 3;
+  }
+
+  /* LIVE + 履歴 */
+  #sideDuoHost {
+    order: 4;
+  }
+
+}
+
+
+.g-meta {
+  gap: 8px;
+}
+
+.g-queue,
+.g-ago,
+.g-result,
+.g-duration {
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.kda-line {
+  font-weight: 900;
+}
+
+.kda-sub {
+  opacity: .8;
+  font-weight: 700;
+}
+
+
+
+
+.rank-row {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 8px 0;
+  border-radius: 0;
+}
+
+.rank-emblem-box {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  display: grid;
+  place-items: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.rank-emblem {
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+
+/* 未ランク用の薄いダミー */
+.rank-emblem.ph {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .04);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+
+/* これを追記：箱も画像も「枠っぽい装飾」を全撤去 */
+.side-card .rank-row .rank-emblem-box {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.side-card .rank-row img.rank-emblem {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  /* ←ここ重要：丸角の箱感が残る原因になりやすい */
+}
+
+/* DUO: Recently played with */
+.duo-head {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 46px 36px 36px;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 0px;
+  margin: 0 0 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: .75;
+}
+
+/* 行はカラムを固定して縦を揃える */
+.duo-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 46px 36px 36px;
+  gap: 6px;
+  align-items: center;
+}
+
+/* DUOのアイコンだけ小さく */
+.duo-row .duo-icon {
+  width: 26px;
+  height: 26px;
+}
+
+/* 名前：長い場合は省略 */
+.duo-row .duo-name {
+  font-size: 12px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 全角6文字以上は1pxだけ小さく（is-long-name で統一） */
+.duo-row .duo-name.is-long-name {
+  font-size: 11px;
+}
+
+/* 数字列は右寄せ（なるべく右に集める） */
+.duo-row .duo-games,
+.duo-row .duo-wl,
+.duo-row .duo-wr {
+  font-size: 11px;
+  white-space: nowrap;
+  text-align: center;
+  justify-self: center;
+  font-weight: 900;
+  opacity: .9;
+}
+
+.duo-head .duo-h-games,
+.duo-head .duo-h-wl,
+.duo-head .duo-h-wr {
+  text-align: center;
+  justify-self: center;
+}
+
+.duo-row .duo-games,
+.duo-head .duo-h-games {
+  text-align: center;
+  justify-self: center;
+}
+
+/* =========================
+   Match card density system
+   - LIVE/ノーマル共通で効かせる
+   ========================= */
+:root {
+  /* ページ左右余白（スマホで“余白があるように見える”の主因にもなる） */
+  --page-pad: 16px;
+
+  /* 履歴カード：左メタ / 右stats / 中央padding */
+  --meta-w: 75px;
+  --meta-px-l: 10px;
+  --meta-px-r: 8px;
+
+  --stats-w: 132px;
+  --stats-px-l: 6px;
+  --stats-px-r: 10px;
+
+  --main-px-l: 10px;
+  --main-px-r: 6px;
+
+  --main-gap: 10px;
+
+  /* アイテム */
+  --item: 28px;
+  --item-gap: 4px;
+}
+
+/* page の左右余白も変数化（スマホで余白感が出るならここが効く） */
+.page {
+  padding: var(--page-pad);
+}
+
+/* 履歴カード（LIVE含む）共通化 */
+.game-card .g-meta {
+  width: var(--meta-w);
+  padding: 10px var(--meta-px-r) 10px var(--meta-px-l);
+}
+
+.game-card .g-stats {
+  width: var(--stats-w);
+  padding: 10px var(--stats-px-r) 10px var(--stats-px-l);
+}
+
+.game-card .g-main {
+  padding: 10px var(--main-px-r) 10px var(--main-px-l);
+  gap: var(--main-gap);
+}
+
+.game-card .items {
+  gap: var(--item-gap);
+}
+
+.game-card .item-slot {
+  width: var(--item);
+  height: var(--item);
+}
+
+/* =========================
+   Density variables (page/card)
+   ========================= */
+@media (min-width: 901px) {
+  :root {
+    --page-pad: 16px;
+    --meta-w: 75px;
+    --stats-w: 132px;
+    --main-px-l: 10px;
+    --main-px-r: 6px;
+    --main-gap: 10px;
+    --item: 28px;
+    --item-gap: 4px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --page-pad: 10px;
+
+    --meta-w: 74px;
+    --stats-w: 120px;
+
+    --main-px-l: 10px;
+    --main-px-r: 10px;
+    /* 右だけ細いのをやめる */
+    --main-gap: 9px;
+
+    --item: 26px;
+    --item-gap: 4px;
+  }
+}
+
+@media (max-width: 420px) {
+  :root {
+    --page-pad: 8px;
+
+    --meta-w: 70px;
+    --stats-w: 104px;
+
+    --main-px-l: 8px;
+    --main-px-r: 8px;
+    --main-gap: 8px;
+
+    --item: 22px;
+    --item-gap: 3px;
+  }
+}
+
+/* <=420px で g-main の grid化を止めて縦長化を防ぐ */
+@media (max-width: 420px) {
+  .game-card .g-main {
+    display: flex !important;
+  }
+}
+
+
+/* =========================
+   g-meta responsive (width + padding)
+   ========================= */
+
+/* 901px以上（PC） */
+@media (min-width: 901px) {
+  .game-card .g-meta {
+    width: 72px;
+    /* 例：少し広め */
+    padding: 10px 8px 10px 10px;
+  }
+}
+
+/* 900px以下（タブレット〜スマホ） */
+@media (max-width: 900px) {
+  .game-card .g-meta {
+    width: 56px;
+    /* 例：少し細くして中央へ幅を返す */
+    padding: 10px 8px 10px 8px;
+  }
+}
+
+/* 420px以下（小さいスマホ） */
+@media (max-width: 420px) {
+  .game-card .g-meta {
+    width: 46px;
+    /* 例：さらに細く */
+    padding: 8px 6px 9px 6px;
+  }
+}
+
+/* 320px以下（小さいスマホ） */
+@media (max-width: 320px) {
+  .game-card .g-meta {
+    width: 38px;
+    /* 例：さらに細く */
+    padding: 6px 4px 9px 6px;
+  }
+}
+
+
+/* =========================
+   card-top column widths (history cards)
+   ========================= */
+
+/* 900px以下：1カラム寄り（必要なら少しだけ調整） */
+@media (max-width: 900px) {
+
+  .game-card:not(.live) .card-top,
+  .game-card.live .card-top {
+    grid-template-columns: 64px 1fr 50px;
+  }
+}
+
+/* 420px以下：縦長にならない程度に“詰める” */
+@media (max-width: 420px) {
+
+  .game-card:not(.live) .card-top,
+  .game-card.live .card-top {
+    grid-template-columns: 52px 1fr 50px;
+  }
+}
+
+/* 320px以下：縦長にならない程度に“詰める” */
+@media (max-width: 320px) {
+
+  .game-card:not(.live) .card-top,
+  .game-card.live .card-top {
+    grid-template-columns: 42px 1fr 50px;
+  }
+}
+
+/* 右列：KP/CSは左揃え、展開ボタンだけ右寄せ */
+.g-stats {
+  align-items: flex-start;
+  /* 子要素を左側に寄せる */
+  text-align: left;
+  /* テキストも左揃え */
+}
+
+.g-stats .chev {
+  align-self: flex-end;
+  /* ボタンだけ右端へ */
+}
+
+.g-stats .stat {
+  white-space: nowrap;
+}
+
+/* =========================
+   g-stats alignment fixes
+   - 900↑は右揃え
+   - 420↓も右揃え（上書きされないように明示）
+   ========================= */
+
+/* 900px以上：右揃え */
+@media (min-width: 901px) {
+  .game-card .g-stats {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+/* 420px以下：右揃え（スマホでも適用） */
+@media (max-width: 420px) {
+  .game-card .g-stats {
+    align-items: flex-end !important;
+    text-align: right !important;
+  }
+
+  /* もしstatだけ左揃えにしたい等、別方針ならここで分ける */
+  /* .game-card .g-stats .stat{ text-align:left; } */
+}
+
+
+/* =========================
+   FIX <=420px: prevent items from overflowing right
+   - Keep champ + KDA on first row
+   - Move items to a second line inside g-main
+   ========================= */
+@media (max-width: 420px) {
+
+  /* apply to history cards and LIVE header */
+  .game-card:not(.live) .g-main,
+  .game-card.live .g-main {
+    flex-wrap: wrap;
+  }
+
+  .game-card:not(.live) .items,
+  .game-card.live .items {
+    flex: 0 0 100%;
+    margin-left: 0 !important;
+    margin-top: 6px;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    /* keep items in one row; now they have full width */
+    gap: 3px;
+  }
+
+  .game-card:not(.live) .item-slot,
+  .game-card.live .item-slot {
+    width: 20px;
+    height: 20px;
+    border-radius: 7px;
+  }
+}
+
+/* =========================
+   FIX: KP / CS left, expand button right (mobile too)
+   ========================= */
+@media (max-width: 900px) {
+
+  /* stats列：KP/CSは左揃え */
+  .game-card:not(.live) .g-stats,
+  .game-card.live .g-stats {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  /* KP/CSは折り返し防止（任意だけどおすすめ） */
+  .game-card:not(.live) .g-stats .stat,
+  .game-card.live .g-stats .stat {
+    white-space: nowrap;
+  }
+
+  /* 展開ボタンだけ右寄せ */
+  .game-card:not(.live) .g-stats .chev,
+  .game-card.live .g-stats .chev {
+    align-self: flex-end !important;
+  }
+}
+
+/* =========================
+   FORCE g-stats width by breakpoint
+   ========================= */
+
+/* 901px以上（PC） */
+@media (min-width: 901px) {
+  .game-card .g-stats {
+    width: 90px !important;
+    /* ←好きな値に */
+  }
+}
+
+/* 900px以下（タブレット帯：641〜900想定） */
+@media (min-width: 641px) and (max-width: 900px) {
+  .game-card .g-stats {
+    width: 90px !important;
+    /* ←好きな値に */
+  }
+}
+
+/* =========================
+   >=901px: KP/CS left, expand button right
+   ========================= */
+@media (min-width: 901px) {
+
+  /* KP/CS（.stat）を左揃えにする */
+  .game-card .g-stats {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  /* ▾ボタンだけ右寄せ */
+  .game-card .g-stats .chev {
+    align-self: flex-end;
+  }
+
+  /* 念のため折り返し防止（必要なら） */
+  .game-card .g-stats .stat {
+    white-space: nowrap;
+  }
+}
+
+/* =========================
+   501–900px: profile top, rank left / duo right, matches below
+   ========================= */
+@media (min-width: 501px) and (max-width: 900px) {
+
+  /* result-grid を 2カラムGridに戻す */
+  .page.result .result-grid,
+  #resultGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
+    align-items: start;
+    width: 100%;
+  }
+
+  /* プロフィールは上で全幅 */
+  .page.result #summary,
+  #summary {
+    grid-column: 1 / -1;
+  }
+
+  /* side を contents にして、子要素を直接配置できるようにする */
+  .page.result #side,
+  #side {
+    display: contents;
+  }
+
+  /* 左：ランク */
+  #sideRankHost {
+    grid-column: 1;
+  }
+
+  /* 右：DUO */
+  #sideDuoHost {
+    grid-column: 2;
+  }
+
+  /* 下：LIVE + 履歴（matchesは全幅） */
+  .page.result #matches,
+  #matches {
+    grid-column: 1 / -1;
+  }
+}
+
+.game-card.live .g-stats .stat-blank {
+  height: 14px;
+  line-height: 14px;
+  visibility: hidden;
+}
+
+@media (min-width: 501px) and (max-width: 900px) {
+
+  #sideRankHost,
+  #sideDuoHost {
+    height: 100%;
+  }
+
+  #sideRankHost .side-card,
+  #sideDuoHost .side-card {
+    height: 100%;
+  }
+}
+
+/* =========================================
+   History cards: center the middle column in 3-col layout
+   (applies when card-top is grid: <=900px in your current setup)
+   ========================================= */
+@media (max-width: 900px) {
+
+  /* 「履歴だけ」= :not(.live) */
+  .game-card:not(.live) .g-main {
+    justify-content: center;
+    /* 中央カラム内で左右中央 */
+  }
+
+  /* ついでに “中の塊(チャンプ+SR+KDA+アイテム)” を中央に寄せる */
+  .game-card:not(.live) .champ-wrap {
+    justify-content: center;
+  }
+
+  /* アイテム行も中央にしたいなら（好みで） */
+  .game-card:not(.live) .items {
+    justify-content: center;
+    margin-left: 0;
+    /* 左に押し出す癖がある場合の相殺 */
+  }
+}
+
+/* =========================
+   Mobile: make footer sit below a full-height home page
+   ========================= */
+@media (max-width: 640px) {
+
+  /* ホームは「画面いっぱい」使ってOK（footer分を引かない） */
+  .page.home {
+    min-height: 100vh;
+    justify-content: center;
+    padding-bottom: 16px;
+    /* ほんの少し余白（任意） */
+  }
+
+  /* footerは別枠で下に置く（見切れてもスクロールで見える） */
+  .footer {
+    position: static;
+  }
+}
+
+/* =========================================
+   Search panel: match height with DUO card
+   - cap panel height
+   - scroll inside lists
+   ========================================= */
+
+/* PC〜タブレット（=検索パネルが2カラムのとき） */
+.search-panel {
+  max-height: 240px;
+  /* ←DUOと同じくらいに。好みで調整 */
+  overflow: hidden;
+  /* パネル自体ははみ出さない */
+}
+
+/* 中身（左右カラム）をスクロールさせる */
+.search-panel .sp-grid {
+  height: 100%;
+}
+
+.search-panel .sp-col {
+  max-height: 240px;
+  /* 上と同じ値 */
+  overflow: auto;
+  /* ここがスクロール */
+  padding-right: 8px;
+  /* スクロールバー分 */
+}
+
+/* 検索パネル：スクロールバーを隠す（スクロールは可能） */
+.sp-col {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* 旧Edge/IE */
+}
+
+.sp-col::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+  /* Chrome/Safari */
+}

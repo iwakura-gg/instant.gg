@@ -157,11 +157,6 @@ async function getMatchV5(matchId) {
     5 * 60 * 1000,
     `match:${matchId}`
   );
-};
-
-  const r = await riotFetchLimited(regionUrl(`/lol/match/v5/matches/${encodeURIComponent(matchId)}`));
-  if (r.ok) cacheSet(matchId, r.data);
-  return { ...r, cached: false };
 }
 
 app.get("/api/summary/:name/:tag", async (req, res) => {

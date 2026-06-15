@@ -726,6 +726,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 18%;
 }
 
 .page.home .top {

@@ -935,7 +935,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // ⑤ チャンピオン統計パネル（追加 API 呼び出しなし：履歴データを再利用）
-  function renderChampPanel(ddragon, champMap) {
+  function renderChampPanel(ddragon, champMap, jaChampNames = {}) {
     const host = ensureSideChampHost();
     if (!host) return;
 
@@ -1780,7 +1780,7 @@ window.addEventListener("DOMContentLoaded", () => {
           }
 
           // ⑤ バッチ追加のたびにチャンピオン統計を更新
-          renderChampPanel(ddragon, champStats);
+          renderChampPanel(ddragon, champStats, jaChampNames);
 
           cursor += batch.length;
         } catch (e) {

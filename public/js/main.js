@@ -1410,10 +1410,13 @@ window.addEventListener("DOMContentLoaded", () => {
     // ローディングオーバーレイを表示
     showOverlay();
 
-    // ✅ side全消しはしない（duoが消える原因）
+    // 前回の検索結果をリセット
+    summary.innerHTML = "";
+    matches.innerHTML = "";
     const rankHost = ensureSideRankHost();
     const duoHost = ensureSideDuoHost();
     const champHost = ensureSideChampHost();
+    if (rankHost) rankHost.innerHTML = "";
     if (duoHost) duoHost.innerHTML = "";
     if (champHost) champHost.innerHTML = "";
 

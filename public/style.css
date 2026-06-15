@@ -2189,49 +2189,6 @@ body {
   /* Chrome/Safari */
 }
 
-/* ===========================================
-   ① ローディングスケルトン
-   =========================================== */
-@keyframes skel-shimmer {
-  0%   { background-position: -800px 0; }
-  100% { background-position:  800px 0; }
-}
-
-.skel-shine {
-  background: rgba(255,255,255,.07);
-  background-image: linear-gradient(
-    90deg,
-    rgba(255,255,255,.07) 25%,
-    rgba(255,255,255,.14) 50%,
-    rgba(255,255,255,.07) 75%
-  );
-  background-size: 1600px 100%;
-  animation: skel-shimmer 1.5s infinite;
-  border-radius: 6px;
-}
-
-.skel-line {
-  height: 10px;
-  border-radius: 5px;
-  margin-bottom: 8px;
-}
-
-.skel-avatar {
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.skel-card {
-  border-radius: 14px;
-  border: 1px solid var(--stroke);
-  padding: 14px;
-  background: rgba(255,255,255,.04);
-  margin-bottom: 8px;
-}
-
-.game-card.skel-card {
-  height: 70px;
-}
 
 /* ===========================================
    ② 勝率バー（RANKサイドカード / Duoパネル）
@@ -2365,4 +2322,87 @@ body {
     max-width: none;
     order: 5;
   }
+}
+
+/* ===========================================
+   ローディングオーバーレイ（9分割スクエア）
+   =========================================== */
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: #0a1428;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+#loading-overlay.hidden {
+  opacity: 0;
+}
+
+#loading-overlay.gone {
+  display: none;
+}
+
+.loader-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 18px);
+  grid-template-rows: repeat(3, 18px);
+  gap: 5px;
+}
+
+.loader-grid .sq {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(90, 160, 255, 0.12);
+}
+
+@keyframes sq-chase {
+  0%, 100% { background: rgba(90,160,255,0.12); box-shadow: none; }
+  12.5%    { background: rgba(90,160,255,1.00); box-shadow: 0 0 8px rgba(90,160,255,.6); }
+  25%      { background: rgba(90,160,255,0.55); box-shadow: none; }
+  37.5%    { background: rgba(90,160,255,0.20); box-shadow: none; }
+}
+
+.loader-grid .sq.active {
+  animation: sq-chase 1.2s linear infinite;
+}
+
+.loader-grid .sq.s0 { animation-delay:  0s; }
+.loader-grid .sq.s1 { animation-delay: -1.05s; }
+.loader-grid .sq.s2 { animation-delay: -0.90s; }
+.loader-grid .sq.s3 { animation-delay: -0.75s; }
+.loader-grid .sq.s4 { animation-delay: -0.60s; }
+.loader-grid .sq.s5 { animation-delay: -0.45s; }
+.loader-grid .sq.s6 { animation-delay: -0.30s; }
+.loader-grid .sq.s7 { animation-delay: -0.15s; }
+
+.loader-grid .sq.center {
+  background: transparent !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+.loader-label {
+  font-size: 12px;
+  color: rgba(234,234,234,.35);
+  letter-spacing: .8px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* コンテンツ側：ローディング中は不可視 */
+#resultGrid.is-loading {
+  opacity: 0;
+}
+
+#resultGrid.is-ready {
+  opacity: 1;
+  transition: opacity 0.35s ease;
 }

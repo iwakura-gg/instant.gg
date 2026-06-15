@@ -1189,22 +1189,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function preloadImages(urls) {
-    const uniq = Array.from(new Set((urls || []).filter(Boolean)));
-    return Promise.all(
-      uniq.map(
-        (u) =>
-          new Promise((res) => {
-            const img = new Image();
-            img.onload = img.onerror = () => res();
-            img.decoding = "async";
-            img.loading = "eager";
-            img.src = u;
-          })
-      )
-    );
-  }
-
   // ===== details teams（履歴展開：名前だけ）=====
   function renderTeamColumn(ddragon, champMaps, list, teamKey) {
     const champBase = `https://ddragon.leagueoflegends.com/cdn/${ddragon}/img/champion/`;
@@ -1342,16 +1326,6 @@ window.addEventListener("DOMContentLoaded", () => {
         const teams = await r.json().catch(() => null);
         if (!r.ok || !teams) throw new Error("team load failed");
 
-        // 先読み（チャンプアイコンだけ）
-        const champBase = `https://ddragon.leagueoflegends.com/cdn/${ddragon}/img/champion/`;
-        const iconUrls = [...(teams.blue || []), ...(teams.red || [])].map((p) => {
-          const champId = champIdForDdragon(champMaps, p.championName);
-          return champId ? `${champBase}${champId}.png` : null;
-        });
-
-        // 先読み中に古い検索へ切替が起きても、描画はそのカード単位なのでOK
-        await preloadImages(iconUrls);
-
         const html = `
   <div class="team-wrap">
     ${renderTeamColumn(ddragon, champMaps, teams.blue, "blue")}
@@ -1378,41 +1352,29 @@ window.addEventListener("DOMContentLoaded", () => {
     return card;
   }
 
-  // ① ローディングスケルトン
-  function renderSkeletons() {
-    if (!summary || !matches) return;
+  // ローディングオーバーレイ
+  const overlay = document.getElementById("loading-overlay");
+  const resultGrid = document.getElementById("resultGrid");
 
-    // サマリースケルトン
-    summary.innerHTML = `
-      <div class="summary-card" style="opacity:.5;">
-        <div class="skel-shine skel-avatar" style="width:52px;height:52px;"></div>
-        <div style="flex:1;">
-          <div class="skel-shine skel-line" style="width:40%;margin-bottom:10px;height:14px;"></div>
-          <div class="skel-shine skel-line" style="width:70%;height:10px;"></div>
-        </div>
-      </div>
-    `;
+  function showOverlay() {
+    if (!overlay) return;
+    overlay.classList.remove("gone", "hidden");
+    if (resultGrid) resultGrid.classList.add("is-loading");
+    resultGrid.classList.remove("is-ready");
+  }
 
-    // サイドスケルトン（RANKだけ）
-    const rankHost = ensureSideRankHost();
-    if (rankHost) {
-      rankHost.innerHTML = `
-        <div class="skel-card" style="opacity:.5;">
-          <div class="skel-shine skel-line" style="width:30%;height:10px;"></div>
-          <div class="skel-shine" style="height:48px;border-radius:10px;margin-bottom:6px;"></div>
-          <div class="skel-shine" style="height:48px;border-radius:10px;"></div>
-        </div>
-      `;
+  function hideOverlay() {
+    if (!overlay) return;
+    // コンテンツをフェードイン
+    if (resultGrid) {
+      resultGrid.classList.remove("is-loading");
+      resultGrid.classList.add("is-ready");
     }
-
-    // マッチカードスケルトン×3
-    matches.innerHTML = "";
-    for (let i = 0; i < 3; i++) {
-      const d = document.createElement("div");
-      d.className = "game-card skel-card skel-shine";
-      d.style.cssText = "height:74px;margin-bottom:8px;opacity:.5;";
-      matches.appendChild(d);
-    }
+    // オーバーレイをフェードアウト → 完全に消す
+    overlay.classList.add("hidden");
+    overlay.addEventListener("transitionend", () => {
+      overlay.classList.add("gone");
+    }, { once: true });
   }
 
   // ===== Resultページ：検索〜描画 =====
@@ -1436,8 +1398,8 @@ window.addEventListener("DOMContentLoaded", () => {
     url.searchParams.set("riotId", riotId);
     history.replaceState(null, "", url.toString());
 
-    // ① スケルトンを先に表示（体感速度向上）
-    renderSkeletons();
+    // ローディングオーバーレイを表示
+    showOverlay();
 
     // ✅ side全消しはしない（duoが消える原因）
     const rankHost = ensureSideRankHost();
@@ -1481,6 +1443,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const sumRes = await fetch(`/api/summary/${encodeURIComponent(parsed.name)}/${encodeURIComponent(parsed.tag)}`);
       const sum = await sumRes.json().catch(() => null);
       if (!sumRes.ok || !sum?.puuid) {
+        hideOverlay();
         setStatus(sum?.error ? sum.error : "サモナー取得に失敗しました");
         return;
       }
@@ -1779,9 +1742,6 @@ window.addEventListener("DOMContentLoaded", () => {
             return await r.json().catch(() => null);
           });
 
-          // スケルトンを削除（最初のバッチのみ）
-          matches.querySelectorAll(".skel-card").forEach((el) => el.remove());
-
           for (let i = 0; i < batch.length; i++) {
             const matchId = batch[i];
             const m = details[i];
@@ -1802,6 +1762,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
           // ⑤ バッチ追加のたびにチャンピオン統計を更新
           renderChampPanel(ddragon, champStats, jaChampNames);
+
+          // 最初のバッチ完了時にオーバーレイを解除（一括表示）
+          if (cursor === batch.length) hideOverlay();
 
           cursor += batch.length;
         } catch (e) {

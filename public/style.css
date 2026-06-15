@@ -1182,6 +1182,11 @@ body {
   width: 100%;
 }
 
+/* RANKカードのバーだけ半分に固定 */
+.rank-lines .wr-bar-wrap {
+  width: 50%;
+}
+
 .rank-queue {
   font-weight: 900;
   font-size: 12px;

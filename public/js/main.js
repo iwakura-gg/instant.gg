@@ -958,7 +958,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const rows = sorted.map((x) => {
       const wrClass = x.wr >= 60 ? "hi" : x.wr >= 50 ? "mi" : "lo";
-      const barColor = x.wr >= 60 ? "rgba(255,200,50,.90)" : x.wr >= 46 ? "rgba(90,160,255,.85)" : "rgba(150,150,150,.55)";
+      const barColor = x.wr >= 50 ? "rgba(90,160,255,.85)" : "rgba(210,80,80,.75)";
       return `
         <div class="champ-stat-row">
           <div class="champ-stat-icon">
@@ -1050,7 +1050,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const w = Number(entry.wins || 0);
       const l = Number(entry.losses || 0);
       const wr = w + l > 0 ? Math.round((w / (w + l)) * 100) : 0;
-      const color = wr >= 60 ? "rgba(255,200,50,.90)" : wr >= 46 ? "rgba(90,160,255,.85)" : "rgba(150,150,150,.55)";
+      const color = wr >= 50 ? "rgba(90,160,255,.85)" : "rgba(210,80,80,.75)";
       return `
         <div class="wr-bar-wrap">
           <div class="wr-bar" style="width:${wr}%;background:${color};"></div>
@@ -1128,7 +1128,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
           const nameCls = isLongName(x.name) ? "duo-name is-long-name" : "duo-name";
 
-          const duoWrColor = wr >= 60 ? "rgba(255,200,50,.90)" : wr >= 46 ? "rgba(90,160,255,.85)" : "rgba(150,150,150,.55)";
+          const duoWrColor = wr >= 50 ? "rgba(90,160,255,.85)" : "rgba(210,80,80,.75)";
           return `
   <a class="rank-row duo-row"
      href="/result.html?riotId=${encodeURIComponent(riotIdFull)}"

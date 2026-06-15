@@ -432,7 +432,7 @@ body {
 
 /* left meta */
 .g-meta {
-  width: 75px;
+  width: 82px;
   padding: 10px 10px 10px 12px;
   display: flex;
   flex-direction: column;
@@ -442,6 +442,7 @@ body {
 .g-queue {
   font-weight: 900;
   font-size: 13px;
+  white-space: nowrap;
 }
 
 .g-ago {

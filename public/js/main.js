@@ -1251,7 +1251,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const ratioVal = (Number(m.kills || 0) + Number(m.assists || 0)) / Math.max(1, Number(m.deaths || 0));
     const ratio = ratioVal.toFixed(2);
-    const kdaClass = ratioVal >= 3.0 ? "kda-ratio-hi" : ratioVal >= 1.0 ? "kda-ratio-mi" : "kda-ratio-lo";
+    const kdaClass = ratioVal >= 4.1 ? "kda-ratio-hi" : ratioVal >= 3.0 ? "kda-ratio-mi" : "kda-ratio-lo";
     const csLine = m.csPerMin != null ? `${m.cs} (${Number(m.csPerMin).toFixed(1)})` : `${m.cs ?? 0}`;
     const kp = m.kp == null ? "0%" : `${Math.round(Number(m.kp) * 100)}%`;
 
@@ -1757,6 +1757,9 @@ window.addEventListener("DOMContentLoaded", () => {
             if (!r.ok) return null;
             return await r.json().catch(() => null);
           });
+
+          // スケルトンを削除（最初のバッチのみ）
+          matches.querySelectorAll(".skel-card").forEach((el) => el.remove());
 
           for (let i = 0; i < batch.length; i++) {
             const matchId = batch[i];

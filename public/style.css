@@ -2244,9 +2244,9 @@ body {
 /* ===========================================
    ③ KDA カラーリング
    =========================================== */
-.kda-ratio-hi { color: #6fa8ff; font-weight: 800; }
-.kda-ratio-mi { color: #ffc847; font-weight: 800; }
-.kda-ratio-lo { color: #f08080; font-weight: 800; }
+.kda-ratio-hi { color: #ffc847; font-weight: 800; } /* 4.1以上：黄色 */
+.kda-ratio-mi { color: #6fa8ff; font-weight: 800; } /* 3.0〜4.0：青色 */
+.kda-ratio-lo { color: rgba(200,200,200,.65); font-weight: 800; } /* 2.9以下：灰色 */
 
 /* ===========================================
    ⑤ チャンピオン統計パネル

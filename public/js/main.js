@@ -1456,6 +1456,27 @@ window.addEventListener("DOMContentLoaded", () => {
         getChampionMaps(ddragon),
       ]);
 
+      // 日本語チャンピオン名マップ（DDragon ja_JP・localStorage キャッシュ）
+      const jaChampNames = await (async () => {
+        const cacheKey = `dd_ja_champ_${ddragon}`;
+        const cached = readCache(cacheKey);
+        if (cached) return cached;
+        try {
+          const r = await fetch(
+            `https://ddragon.leagueoflegends.com/cdn/${ddragon}/data/ja_JP/champion.json`
+          );
+          const json = await r.json();
+          const map = {};
+          for (const [id, info] of Object.entries(json.data || {})) {
+            map[id] = info.name; // 例: "Yasuo" → "ヤスオ"
+          }
+          writeCache(cacheKey, map);
+          return map;
+        } catch {
+          return {};
+        }
+      })();
+
       // Summary
       const sumRes = await fetch(`/api/summary/${encodeURIComponent(parsed.name)}/${encodeURIComponent(parsed.tag)}`);
       const sum = await sumRes.json().catch(() => null);

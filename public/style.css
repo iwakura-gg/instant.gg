@@ -2029,11 +2029,12 @@ body {
    ========================= */
 @media (min-width: 501px) and (max-width: 900px) {
 
-  /* result-grid を 2カラムGridに戻す */
+  /* result-grid を 2カラム・3行Grid */
   .page.result .result-grid,
   #resultGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
     gap: 12px 14px;
     align-items: start;
     width: 100%;
@@ -2043,6 +2044,7 @@ body {
   .page.result #summary,
   #summary {
     grid-column: 1 / -1;
+    grid-row: 1;
   }
 
   /* side を contents にして、子要素を直接配置できるようにする */
@@ -2051,20 +2053,30 @@ body {
     display: contents;
   }
 
-  /* 左：ランク */
+  /* 左：ランク（行2〜3 縦伸ばし） */
   #sideRankHost {
     grid-column: 1;
+    grid-row: 2 / 4;
+    align-self: stretch;
   }
 
-  /* 右：DUO */
+  /* 右上：DUO */
   #sideDuoHost {
     grid-column: 2;
+    grid-row: 2;
+  }
+
+  /* 右下：チャンピオン統計 */
+  #sideChampHost {
+    grid-column: 2;
+    grid-row: 3;
   }
 
   /* 下：LIVE + 履歴（matchesは全幅） */
   .page.result #matches,
   #matches {
     grid-column: 1 / -1;
+    grid-row: 4;
   }
 }
 
@@ -2077,13 +2089,16 @@ body {
 @media (min-width: 501px) and (max-width: 900px) {
 
   #sideRankHost,
-  #sideDuoHost {
+  #sideDuoHost,
+  #sideChampHost {
     height: 100%;
   }
 
   #sideRankHost .side-card,
-  #sideDuoHost .side-card {
+  #sideDuoHost .side-card,
+  #sideChampHost .side-card {
     height: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -2331,6 +2346,7 @@ body {
 }
 
 
+
 /* ===========================================
    PC：Duoパネルとチャンピオン統計の間隔を統一
    =========================================== */
@@ -2340,50 +2356,6 @@ body {
 
 #sideChampHost {
   margin-bottom: 12px;
-}
-
-/* ===========================================
-   タブレット(641〜900px)：
-   RANKを左カラムに縦伸ばし、
-   Duo + チャンプ統計を右カラムに移動
-   =========================================== */
-@media (min-width: 641px) and (max-width: 900px) {
-
-  /* side 全体を横並びグリッドに変える */
-  #side {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 10px;
-    align-items: start;
-  }
-
-  /* RANK：左カラムで2行ぶち抜き（縦伸ばし） */
-  #sideRankHost {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    margin-bottom: 0;
-    align-self: stretch;
-  }
-
-  #sideRankHost .side-card {
-    height: 100%;
-    box-sizing: border-box;
-  }
-
-  /* 一緒にプレイ：右カラム上段 */
-  #sideDuoHost {
-    grid-column: 2;
-    grid-row: 1;
-    margin-bottom: 0;
-  }
-
-  /* チャンピオン統計：右カラム下段 */
-  #sideChampHost {
-    grid-column: 2;
-    grid-row: 2;
-    margin-bottom: 0;
-  }
 }
 
 /* スマホ(≤500px)でも sideChampHost を順序に含める */

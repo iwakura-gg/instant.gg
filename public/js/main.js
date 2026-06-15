@@ -1763,10 +1763,10 @@ window.addEventListener("DOMContentLoaded", () => {
           // ⑤ バッチ追加のたびにチャンピオン統計を更新
           renderChampPanel(ddragon, champStats, jaChampNames);
 
-          // 最初のバッチ完了時にオーバーレイを解除（一括表示）
-          if (cursor === batch.length) hideOverlay();
-
+          // 最初のバッチ完了時にオーバーレイを解除（cursor が 0 のとき = 初回）
+          const isFirstBatch = cursor === 0;
           cursor += batch.length;
+          if (isFirstBatch) hideOverlay();
         } catch (e) {
           console.error(e);
           setStatus("通信エラー（履歴取得）");

@@ -934,14 +934,14 @@ window.addEventListener("DOMContentLoaded", () => {
     return champ;
   }
 
-  // ⑤ チャンピオン統計パネル（追加 API 呼び出しなし：履歴データを再利用）
+  // ⑤ チャンピオン統計パネル（Duoパネルと同じレイアウト）
   function renderChampPanel(ddragon, champMap, jaChampNames = {}) {
     const host = ensureSideChampHost();
     if (!host) return;
 
     const champBase = `https://ddragon.leagueoflegends.com/cdn/${ddragon}/img/champion/`;
 
-    // ゲーム数でソート、上位5件
+    // ゲーム数でソート、上位4件
     const sorted = Array.from(champMap.entries())
       .map(([name, s]) => {
         const wr = s.games > 0 ? Math.round((s.wins / s.games) * 100) : 0;
@@ -949,7 +949,7 @@ window.addEventListener("DOMContentLoaded", () => {
       })
       .filter((x) => x.games >= 1)
       .sort((a, b) => b.games - a.games || b.wr - a.wr)
-      .slice(0, 5);
+      .slice(0, 4);
 
     if (!sorted.length) {
       host.innerHTML = "";
@@ -957,31 +957,39 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     const rows = sorted.map((x) => {
-      const wrClass = x.wr >= 60 ? "hi" : x.wr >= 50 ? "mi" : "lo";
-      const barColor = x.wr >= 50 ? "rgba(90,160,255,.85)" : "rgba(210,80,80,.75)";
       const displayName = jaChampNames[x.name] || x.name;
+      const nameCls = isLongName(displayName) ? "duo-name is-long-name" : "duo-name";
+      const barColor = x.wr >= 50 ? "rgba(90,160,255,.85)" : "rgba(210,80,80,.75)";
       return `
-        <div class="champ-stat-row">
-          <div class="champ-stat-icon">
-            <img src="${champBase}${escapeHtml(x.name)}.png" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="champ-stat-body">
-            <div class="champ-stat-head">
-              <span class="champ-stat-name">${escapeHtml(displayName)}</span>
-              <span class="champ-stat-meta">${x.games}戦</span>
-              <span class="champ-stat-wr ${wrClass}">${x.wr}%</span>
-            </div>
-            <div class="champ-stat-bar-wrap">
-              <div class="champ-stat-bar" style="width:${x.wr}%;background:${barColor};"></div>
-            </div>
-          </div>
-        </div>
-      `;
+  <div class="rank-row duo-row" style="cursor:default;">
+    <div class="rank-emblem duo-icon" style="border-radius:6px;overflow:hidden;background:transparent;">
+      <img src="${champBase}${escapeHtml(x.name)}.png" loading="lazy"
+           style="width:100%;height:100%;object-fit:cover;display:block;"
+           onerror="this.style.display='none'">
+    </div>
+    <div class="${nameCls}" title="${escapeHtml(displayName)}">
+      ${escapeHtml(displayName)}
+      <div class="wr-bar-wrap" style="margin-top:3px;">
+        <div class="wr-bar" style="width:${x.wr}%;background:${barColor};"></div>
+      </div>
+    </div>
+    <div class="duo-games">${x.games}</div>
+    <div class="duo-wl">${x.wins}/${x.losses}</div>
+    <div class="duo-wr">${x.wr}%</div>
+  </div>
+`;
     }).join("");
 
     host.innerHTML = `
       <div class="side-card">
-        <div class="side-title">チャンピオン統計</div>
+        <div class="side-title">チャンピオン統計（直近20戦）</div>
+        <div class="duo-head" aria-hidden="true">
+          <div class="duo-h-icon"></div>
+          <div class="duo-h-name">チャンピオン</div>
+          <div class="duo-h-games">ゲーム数</div>
+          <div class="duo-h-wl">勝/敗</div>
+          <div class="duo-h-wr">勝率</div>
+        </div>
         ${rows}
       </div>
     `;

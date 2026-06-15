@@ -959,6 +959,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const rows = sorted.map((x) => {
       const wrClass = x.wr >= 60 ? "hi" : x.wr >= 50 ? "mi" : "lo";
       const barColor = x.wr >= 50 ? "rgba(90,160,255,.85)" : "rgba(210,80,80,.75)";
+      const displayName = jaChampNames[x.name] || x.name;
       return `
         <div class="champ-stat-row">
           <div class="champ-stat-icon">
@@ -966,7 +967,7 @@ window.addEventListener("DOMContentLoaded", () => {
           </div>
           <div class="champ-stat-body">
             <div class="champ-stat-head">
-              <span class="champ-stat-name">${escapeHtml(x.name)}</span>
+              <span class="champ-stat-name">${escapeHtml(displayName)}</span>
               <span class="champ-stat-meta">${x.games}戦</span>
               <span class="champ-stat-wr ${wrClass}">${x.wr}%</span>
             </div>

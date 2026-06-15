@@ -1174,6 +1174,12 @@ body {
 
 .rank-lines {
   min-width: 0;
+  flex: 1;
+  width: 0; /* flex child が テキスト幅に引っ張られないよう固定 */
+}
+
+.wr-bar-wrap {
+  width: 100%;
 }
 
 .rank-queue {

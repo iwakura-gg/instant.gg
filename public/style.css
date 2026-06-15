@@ -1675,6 +1675,16 @@ body {
   font-size: 12px;
   min-width: 0;
   overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+}
+
+/* 名前テキスト部分の省略 */
+.duo-row .duo-name > :first-child {
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

@@ -1216,18 +1216,16 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const rowInner = `
           <img class="icon22" src="${champIcon}" loading="lazy" onerror="this.style.display='none'">
-          ${rankMap[p.puuid] ? `<span class="team-rank">${escapeHtml(rankMap[p.puuid])}</span>` : ""}
+          <span class="team-rank">${escapeHtml(rankMap[p.puuid] || "U")}</span>
           <div class="team-name${longNameClass}">${displayName}</div>
         `;
 
-        const hasRank = !!rankMap[p.puuid];
-        const rankClass = hasRank ? " rank-inline" : "";
         if (riotId && !p.anonymous) {
-          return `<a class="team-row ${p.isMe ? "me" : ""}${rankClass}" href="/result.html?riotId=${encodeURIComponent(
+          return `<a class="team-row ${p.isMe ? "me" : ""} rank-inline" href="/result.html?riotId=${encodeURIComponent(
             riotId
           )}" target="_blank" rel="noopener noreferrer">${rowInner}</a>`;
         }
-        return `<div class="team-row ${p.isMe ? "me" : ""}${rankClass}">${rowInner}</div>`;
+        return `<div class="team-row ${p.isMe ? "me" : ""} rank-inline">${rowInner}</div>`;
       })
       .join("");
 

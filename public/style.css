@@ -2447,9 +2447,18 @@ body {
 }
 
 .team-row.rank-inline .team-rank {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  color: rgba(234,234,234,.55);
+  color: rgba(234,234,234,.70);
   white-space: nowrap;
-  text-align: left;
+  text-align: center;
+  border: 1px solid rgba(234,234,234,.35);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
 }

@@ -1340,24 +1340,28 @@ window.addEventListener("DOMContentLoaded", () => {
         // チームメンバー全員の puuid を収集してランクを並列取得
         const allPlayers = [...(teams.blue || []), ...(teams.red || [])];
         const rankMap = {};
-        await Promise.all(
-          allPlayers
-            .filter((p) => p.puuid && !p.anonymous)
-            .map(async (p) => {
-              const ranked = await getRankedByPuuidCached(p.puuid);
-              if (!ranked) return;
-              const solo = ranked.find((r) => r.queueType === "RANKED_SOLO_5x5");
-              const flex = ranked.find((r) => r.queueType === "RANKED_FLEX_SR");
-              const entry = solo || flex;
-              if (!entry) return;
-              const tierShort = { IRON:"I", BRONZE:"B", SILVER:"S", GOLD:"G",
-                PLATINUM:"P", EMERALD:"E", DIAMOND:"D",
-                MASTER:"M", GRANDMASTER:"GM", CHALLENGER:"C" };
-              const t = tierShort[entry.tier] || entry.tier.charAt(0);
-              const rank = entry.rank || "";
-              rankMap[p.puuid] = rank ? `${t}${rank}` : t;
-            })
-        );
+        try {
+          await Promise.all(
+            allPlayers
+              .filter((p) => p.puuid && !p.anonymous)
+              .map(async (p) => {
+                try {
+                  const ranked = await getRankedByPuuidCached(p.puuid);
+                  if (!ranked) return;
+                  const solo = ranked.find((r) => r.queueType === "RANKED_SOLO_5x5");
+                  const flex = ranked.find((r) => r.queueType === "RANKED_FLEX_SR");
+                  const entry = solo || flex;
+                  if (!entry) return;
+                  const tierShort = { IRON:"I", BRONZE:"B", SILVER:"S", GOLD:"G",
+                    PLATINUM:"P", EMERALD:"E", DIAMOND:"D",
+                    MASTER:"M", GRANDMASTER:"GM", CHALLENGER:"C" };
+                  const t = tierShort[entry.tier] || entry.tier.charAt(0);
+                  const rank = entry.rank || "";
+                  rankMap[p.puuid] = rank ? `${t}${rank}` : t;
+                } catch { /* ランク取得失敗は無視して名前だけ表示 */ }
+              })
+          );
+        } catch { /* Promise.all 自体の失敗も無視 */ }
 
         const html = `
   <div class="team-wrap">
@@ -1370,8 +1374,13 @@ window.addEventListener("DOMContentLoaded", () => {
         details.dataset.loaded = "1";
 
       } catch {
-        details.innerHTML = `<div class="details-loading">通信エラー</div>`;
-        details.dataset.loaded = "1";
+        details.innerHTML = `<div class="details-loading">通信エラー（タップして再試行）</div>`;
+        // dataset.loaded をセットしないので再クリックで再試行できる
+        delete details.dataset.loading;
+        btn.disabled = false;
+        details.removeAttribute("hidden");
+        btn.textContent = "▾";
+        return;
       } finally {
         details.removeAttribute("hidden");
         btn.textContent = "▴";

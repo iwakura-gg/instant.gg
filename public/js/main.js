@@ -1214,10 +1214,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const longNameClass = (!p.anonymous && p.name && isLongName(p.name)) ? " is-long-name" : "";
 
-        const rankText = p.puuid && rankMap[p.puuid] ? rankMap[p.puuid] : null;
         const rowInner = `
           <img class="icon22" src="${champIcon}" loading="lazy" onerror="this.style.display='none'">
-          ${rankText ? `<span class="team-rank">${escapeHtml(rankText)}</span>` : ""}
+          ${rankMap[p.puuid] ? `<span class="team-rank">${escapeHtml(rankMap[p.puuid])}</span>` : ""}
           <div class="team-name${longNameClass}">${displayName}</div>
         `;
 
@@ -1331,37 +1330,37 @@ window.addEventListener("DOMContentLoaded", () => {
 
       details.dataset.loading = "1";
       btn.disabled = true;
+      details.innerHTML = `<div class="details-loading">取得中...</div>`;
+      details.removeAttribute("hidden");
 
       try {
         const r = await fetch(`/api/matchteams/${encodeURIComponent(matchId)}/${encodeURIComponent(myPuuid)}`);
         const teams = await r.json().catch(() => null);
         if (!r.ok || !teams) throw new Error("team load failed");
 
-        // チームメンバー全員の puuid を収集してランクを並列取得
+        // ランクを全員分並列取得してから一斉表示
         const allPlayers = [...(teams.blue || []), ...(teams.red || [])];
+        const tierShort = { IRON:"I", BRONZE:"B", SILVER:"S", GOLD:"G",
+          PLATINUM:"P", EMERALD:"E", DIAMOND:"D",
+          MASTER:"M", GRANDMASTER:"GM", CHALLENGER:"C" };
         const rankMap = {};
-        try {
-          await Promise.all(
-            allPlayers
-              .filter((p) => p.puuid && !p.anonymous)
-              .map(async (p) => {
-                try {
-                  const ranked = await getRankedByPuuidCached(p.puuid);
-                  if (!ranked) return;
-                  const solo = ranked.find((r) => r.queueType === "RANKED_SOLO_5x5");
-                  const flex = ranked.find((r) => r.queueType === "RANKED_FLEX_SR");
-                  const entry = solo || flex;
-                  if (!entry) return;
-                  const tierShort = { IRON:"I", BRONZE:"B", SILVER:"S", GOLD:"G",
-                    PLATINUM:"P", EMERALD:"E", DIAMOND:"D",
-                    MASTER:"M", GRANDMASTER:"GM", CHALLENGER:"C" };
-                  const t = tierShort[entry.tier] || entry.tier.charAt(0);
-                  const rank = entry.rank || "";
-                  rankMap[p.puuid] = rank ? `${t}${rank}` : t;
-                } catch { /* ランク取得失敗は無視して名前だけ表示 */ }
-              })
-          );
-        } catch { /* Promise.all 自体の失敗も無視 */ }
+        await Promise.all(
+          allPlayers
+            .filter((p) => p.puuid && !p.anonymous)
+            .map(async (p) => {
+              try {
+                const ranked = await getRankedByPuuidCached(p.puuid);
+                if (!ranked) return;
+                const solo = ranked.find((r) => r.queueType === "RANKED_SOLO_5x5");
+                const flex = ranked.find((r) => r.queueType === "RANKED_FLEX_SR");
+                const entry = solo || flex;
+                if (!entry) return;
+                const t = tierShort[entry.tier] || entry.tier.charAt(0);
+                const rank = entry.rank || "";
+                rankMap[p.puuid] = rank ? `${t}${rank}` : t;
+              } catch { }
+            })
+        );
 
         const html = `
   <div class="team-wrap">
@@ -1369,7 +1368,6 @@ window.addEventListener("DOMContentLoaded", () => {
     ${renderTeamColumn(ddragon, champMaps, teams.red, "red", rankMap)}
   </div>
 `;
-
         details.innerHTML = html;
         details.dataset.loaded = "1";
 

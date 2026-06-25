@@ -1199,7 +1199,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===== details teams（履歴展開：名前だけ）=====
-  function renderTeamColumn(ddragon, champMaps, list, teamKey) {
+  function renderTeamColumn(ddragon, champMaps, list, teamKey, rankMap = {}) {
     const champBase = `https://ddragon.leagueoflegends.com/cdn/${ddragon}/img/champion/`;
 
     const roleOrder = { TOP: 0, JG: 1, MID: 2, ADC: 3, SUP: 4, OTHER: 99 };
@@ -1214,8 +1214,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const longNameClass = (!p.anonymous && p.name && isLongName(p.name)) ? " is-long-name" : "";
 
+        const rankText = p.puuid && rankMap[p.puuid] ? rankMap[p.puuid] : null;
         const rowInner = `
           <img class="icon22" src="${champIcon}" loading="lazy" onerror="this.style.display='none'">
+          ${rankText ? `<span class="team-rank">${escapeHtml(rankText)}</span>` : ""}
           <div class="team-name${longNameClass}">${displayName}</div>
         `;
 
@@ -1289,6 +1291,7 @@ window.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <div class="kda">
+            ${m.summonerLevel ? `<div class="summoner-level">Lv.${escapeHtml(m.summonerLevel)}</div>` : ""}
             <div class="kda-line">${escapeHtml(m.kills)}/${escapeHtml(m.deaths)}/${escapeHtml(m.assists)}</div>
             <div class="kda-sub">KDA<span class="${kdaClass}">${escapeHtml(ratio)}:1</span></div>
           </div>
@@ -1335,10 +1338,32 @@ window.addEventListener("DOMContentLoaded", () => {
         const teams = await r.json().catch(() => null);
         if (!r.ok || !teams) throw new Error("team load failed");
 
+        // チームメンバー全員の puuid を収集してランクを並列取得
+        const allPlayers = [...(teams.blue || []), ...(teams.red || [])];
+        const rankMap = {};
+        await Promise.all(
+          allPlayers
+            .filter((p) => p.puuid && !p.anonymous)
+            .map(async (p) => {
+              const ranked = await getRankedByPuuidCached(p.puuid);
+              if (!ranked) return;
+              const solo = ranked.find((r) => r.queueType === "RANKED_SOLO_5x5");
+              const flex = ranked.find((r) => r.queueType === "RANKED_FLEX_SR");
+              const entry = solo || flex;
+              if (!entry) return;
+              const tierShort = { IRON:"I", BRONZE:"B", SILVER:"S", GOLD:"G",
+                PLATINUM:"P", EMERALD:"E", DIAMOND:"D",
+                MASTER:"M", GRANDMASTER:"GM", CHALLENGER:"C" };
+              const t = tierShort[entry.tier] || entry.tier.charAt(0);
+              const rank = entry.rank || "";
+              rankMap[p.puuid] = rank ? `${t}${rank}` : t;
+            })
+        );
+
         const html = `
   <div class="team-wrap">
-    ${renderTeamColumn(ddragon, champMaps, teams.blue, "blue")}
-    ${renderTeamColumn(ddragon, champMaps, teams.red, "red")}
+    ${renderTeamColumn(ddragon, champMaps, teams.blue, "blue", rankMap)}
+    ${renderTeamColumn(ddragon, champMaps, teams.red, "red", rankMap)}
   </div>
 `;
 

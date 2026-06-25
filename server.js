@@ -460,6 +460,7 @@ app.get("/api/match/:matchId/:puuid", async (req, res) => {
 
     championName: me.championName,
     champLevel: me.champLevel,
+    summonerLevel: me.summonerLevel ?? null,
 
     spell1Id: me.summoner1Id,
     spell2Id: me.summoner2Id,
@@ -514,6 +515,7 @@ app.get("/api/matchteams/:matchId/:puuid", async (req, res) => {
       isMe: p.puuid === puuid,
       role: toRole(p),
 
+      puuid: p.puuid || null,
       name: gameName,
       tag: tagLine,
       anonymous: !gameName,

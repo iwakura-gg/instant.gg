@@ -1220,12 +1220,14 @@ window.addEventListener("DOMContentLoaded", () => {
           <div class="team-name${longNameClass}">${displayName}</div>
         `;
 
+        const hasRank = !!rankMap[p.puuid];
+        const rankClass = hasRank ? " rank-inline" : "";
         if (riotId && !p.anonymous) {
-          return `<a class="team-row ${p.isMe ? "me" : ""}" href="/result.html?riotId=${encodeURIComponent(
+          return `<a class="team-row ${p.isMe ? "me" : ""}${rankClass}" href="/result.html?riotId=${encodeURIComponent(
             riotId
           )}" target="_blank" rel="noopener noreferrer">${rowInner}</a>`;
         }
-        return `<div class="team-row ${p.isMe ? "me" : ""}">${rowInner}</div>`;
+        return `<div class="team-row ${p.isMe ? "me" : ""}${rankClass}">${rowInner}</div>`;
       })
       .join("");
 
@@ -1354,7 +1356,8 @@ window.addEventListener("DOMContentLoaded", () => {
                 const entry = ranked.solo || ranked.flex;
                 if (!entry) return;
                 const t = tierShort[entry.tier] || entry.tier.charAt(0);
-                const rank = entry.rank || "";
+                const romanToNum = { "I":"1", "II":"2", "III":"3", "IV":"4" };
+                const rank = romanToNum[entry.rank] || entry.rank || "";
                 rankMap[p.puuid] = rank ? `${t}${rank}` : t;
               } catch { }
             })

@@ -2439,3 +2439,17 @@ body {
   white-space: nowrap;
   min-width: 22px;
 }
+
+/* 履歴展開パネル：アイコン | ランク | 名前 の3カラム */
+.team-row.rank-inline {
+  grid-template-columns: 22px 28px 1fr;
+  gap: 6px;
+}
+
+.team-row.rank-inline .team-rank {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(234,234,234,.55);
+  white-space: nowrap;
+  text-align: left;
+}

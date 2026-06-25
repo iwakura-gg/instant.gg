@@ -1351,9 +1351,7 @@ window.addEventListener("DOMContentLoaded", () => {
               try {
                 const ranked = await getRankedByPuuidCached(p.puuid);
                 if (!ranked) return;
-                const solo = ranked.find((r) => r.queueType === "RANKED_SOLO_5x5");
-                const flex = ranked.find((r) => r.queueType === "RANKED_FLEX_SR");
-                const entry = solo || flex;
+                const entry = ranked.solo || ranked.flex;
                 if (!entry) return;
                 const t = tierShort[entry.tier] || entry.tier.charAt(0);
                 const rank = entry.rank || "";

@@ -460,7 +460,6 @@ app.get("/api/match/:matchId/:puuid", async (req, res) => {
 
     championName: me.championName,
     champLevel: me.champLevel,
-    summonerLevel: me.summonerLevel ?? null,
 
     spell1Id: me.summoner1Id,
     spell2Id: me.summoner2Id,

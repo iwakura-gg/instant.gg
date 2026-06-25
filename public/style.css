@@ -2430,15 +2430,6 @@ body {
   transition: opacity 0.35s ease;
 }
 
-/* サモナーレベル表示 */
-.summoner-level {
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(234,234,234,.55);
-  margin-bottom: 2px;
-  white-space: nowrap;
-}
-
 /* 展開パネルのランクテキスト */
 .team-rank {
   font-size: 10px;

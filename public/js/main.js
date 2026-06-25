@@ -1291,7 +1291,6 @@ window.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <div class="kda">
-            ${m.summonerLevel ? `<div class="summoner-level">Lv.${escapeHtml(m.summonerLevel)}</div>` : ""}
             <div class="kda-line">${escapeHtml(m.kills)}/${escapeHtml(m.deaths)}/${escapeHtml(m.assists)}</div>
             <div class="kda-sub">KDA<span class="${kdaClass}">${escapeHtml(ratio)}:1</span></div>
           </div>

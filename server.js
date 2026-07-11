@@ -251,7 +251,7 @@ app.get("/api/live/:id", async (req, res) => {
   }
 
   const byPuuid = await riotFetchCached(
-    platformUrl(`/lol/spectator/v5/active-games/by-puuid/${encodeURIComponent(id)}`),
+    platformUrl(`/lol/spectator/v5/active-games/by-summoner/${encodeURIComponent(id)}`),
     15 * 1000,
     `live:puuid:${id}`
   );

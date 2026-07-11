@@ -437,7 +437,7 @@ app.get("/api/match/:matchId/:puuid", async (req, res) => {
   const teamKills = myTeam.reduce((sum, p) => sum + (p.kills || 0), 0);
   const kp = teamKills > 0 ? (me.kills + me.assists) / teamKills : null;
 
-  const items = [me.item0, me.item1, me.item2, me.item3, me.item4, me.item5, me.item6].map((x) => Number(x || 0));
+  const items = [me.item0, me.item1, me.item2, me.item3, me.item4, me.item5, me.item6, me.item7].filter((x) => x !== undefined).map((x) => Number(x || 0));
 
   let keystoneId = null;
   let subStyleId = null;

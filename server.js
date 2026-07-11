@@ -438,6 +438,7 @@ app.get("/api/match/:matchId/:puuid", async (req, res) => {
   const kp = teamKills > 0 ? (me.kills + me.assists) / teamKills : null;
 
   const items = [me.item0, me.item1, me.item2, me.item3, me.item4, me.item5, me.item6, me.item7].filter((x) => x !== undefined).map((x) => Number(x || 0));
+  console.log('ITEM_DEBUG', JSON.stringify(Object.fromEntries(Object.entries(me).filter(([k]) => k.toLowerCase().includes('item')))));
 
   let keystoneId = null;
   let subStyleId = null;

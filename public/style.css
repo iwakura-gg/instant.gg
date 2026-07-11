@@ -432,7 +432,7 @@ body {
 
 /* left meta */
 .g-meta {
-  width: 82px;
+  width: 75px;
   padding: 10px 10px 10px 12px;
   display: flex;
   flex-direction: column;
@@ -442,7 +442,6 @@ body {
 .g-queue {
   font-weight: 900;
   font-size: 13px;
-  white-space: nowrap;
 }
 
 .g-ago {
@@ -727,7 +726,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-bottom: 18%;
 }
 
 .page.home .top {
@@ -1175,17 +1173,6 @@ body {
 
 .rank-lines {
   min-width: 0;
-  flex: 1;
-  width: 0; /* flex child が テキスト幅に引っ張られないよう固定 */
-}
-
-.wr-bar-wrap {
-  width: 100%;
-}
-
-/* RANKカードのバーだけ半分に固定 */
-.rank-lines .wr-bar-wrap {
-  width: 50%;
 }
 
 .rank-queue {
@@ -1675,16 +1662,6 @@ body {
   font-size: 12px;
   min-width: 0;
   overflow: hidden;
-  white-space: nowrap;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: stretch;
-}
-
-/* 名前テキスト部分の省略 */
-.duo-row .duo-name > :first-child {
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -2052,12 +2029,11 @@ body {
    ========================= */
 @media (min-width: 501px) and (max-width: 900px) {
 
-  /* result-grid を 2カラム・3行Grid */
+  /* result-grid を 2カラムGridに戻す */
   .page.result .result-grid,
   #resultGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto auto;
     gap: 12px 14px;
     align-items: start;
     width: 100%;
@@ -2067,7 +2043,6 @@ body {
   .page.result #summary,
   #summary {
     grid-column: 1 / -1;
-    grid-row: 1;
   }
 
   /* side を contents にして、子要素を直接配置できるようにする */
@@ -2076,30 +2051,20 @@ body {
     display: contents;
   }
 
-  /* 左：ランク（行2〜3 縦伸ばし） */
+  /* 左：ランク */
   #sideRankHost {
     grid-column: 1;
-    grid-row: 2 / 4;
-    align-self: stretch;
   }
 
-  /* 右上：DUO */
+  /* 右：DUO */
   #sideDuoHost {
     grid-column: 2;
-    grid-row: 2;
-  }
-
-  /* 右下：チャンピオン統計 */
-  #sideChampHost {
-    grid-column: 2;
-    grid-row: 3;
   }
 
   /* 下：LIVE + 履歴（matchesは全幅） */
   .page.result #matches,
   #matches {
     grid-column: 1 / -1;
-    grid-row: 4;
   }
 }
 
@@ -2112,16 +2077,13 @@ body {
 @media (min-width: 501px) and (max-width: 900px) {
 
   #sideRankHost,
-  #sideDuoHost,
-  #sideChampHost {
+  #sideDuoHost {
     height: 100%;
   }
 
   #sideRankHost .side-card,
-  #sideDuoHost .side-card,
-  #sideChampHost .side-card {
+  #sideDuoHost .side-card {
     height: 100%;
-    box-sizing: border-box;
   }
 }
 
@@ -2211,247 +2173,20 @@ body {
   display: none;
   /* Chrome/Safari */
 }
-
-
-/* ===========================================
-   ② 勝率バー（RANKサイドカード / Duoパネル）
-   =========================================== */
-.wr-bar-wrap {
-  background: rgba(255,255,255,.09);
-  border-radius: 3px;
-  height: 4px;
-  margin-top: 5px;
-  overflow: hidden;
+/* フッターリンク */
+.footer-links {
+  margin-bottom: 10px;
 }
 
-.wr-bar {
-  height: 4px;
-  border-radius: 3px;
-  transition: width .4s ease;
-}
-
-.wr-bar-label {
-  font-size: 11px;
-  color: rgba(234,234,234,.60);
-  margin-top: 3px;
-}
-
-/* ===========================================
-   ③ KDA カラーリング
-   =========================================== */
-.kda-ratio-hi { color: #ffc847; font-weight: 800; } /* 4.1以上：黄色 */
-.kda-ratio-mi { color: #6fa8ff; font-weight: 800; } /* 3.0〜4.0：青色 */
-.kda-ratio-lo { color: rgba(200,200,200,.65); font-weight: 800; } /* 2.9以下：灰色 */
-
-/* ===========================================
-   ⑤ チャンピオン統計パネル
-   =========================================== */
-.champ-stat-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 9px;
-}
-
-.champ-stat-row:last-child {
-  margin-bottom: 0;
-}
-
-.champ-stat-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.10);
-}
-
-.champ-stat-icon img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-.champ-stat-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.champ-stat-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 4px;
-}
-
-.champ-stat-name {
+.footer-links a {
   font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-  min-width: 0;
-}
-
-.champ-stat-meta {
-  font-size: 10px;
   color: rgba(234,234,234,.55);
-  flex-shrink: 0;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(234,234,234,.25);
+  padding-bottom: 1px;
+  transition: color .15s;
 }
 
-.champ-stat-wr {
-  font-size: 11px;
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-.champ-stat-wr.hi { color: #6fa8ff; }
-.champ-stat-wr.mi { color: #ffc847; }
-.champ-stat-wr.lo { color: #f08080; }
-
-.champ-stat-bar-wrap {
-  background: rgba(255,255,255,.08);
-  border-radius: 2px;
-  height: 3px;
-  margin-top: 4px;
-  overflow: hidden;
-}
-
-.champ-stat-bar {
-  height: 3px;
-  border-radius: 2px;
-  transition: width .4s ease;
-}
-
-
-
-/* ===========================================
-   PC：Duoパネルとチャンピオン統計の間隔を統一
-   =========================================== */
-#sideDuoHost {
-  margin-bottom: 12px;
-}
-
-#sideChampHost {
-  margin-bottom: 12px;
-}
-
-/* スマホ(≤500px)でも sideChampHost を順序に含める */
-@media (max-width: 500px) {
-  #sideChampHost {
-    width: 100%;
-    max-width: none;
-    order: 5;
-  }
-}
-
-/* ===========================================
-   ローディングオーバーレイ（9分割スクエア）
-   =========================================== */
-#loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: #0a1428;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-
-#loading-overlay.hidden {
-  opacity: 0;
-}
-
-#loading-overlay.gone {
-  display: none;
-}
-
-.loader-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 18px);
-  grid-template-rows: repeat(3, 18px);
-  gap: 5px;
-}
-
-.loader-grid .sq {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  background: rgba(90, 160, 255, 0.12);
-}
-
-@keyframes sq-chase {
-  0%, 100% { background: rgba(90,160,255,0.12); box-shadow: none; }
-  12.5%    { background: rgba(90,160,255,1.00); box-shadow: 0 0 8px rgba(90,160,255,.6); }
-  25%      { background: rgba(90,160,255,0.55); box-shadow: none; }
-  37.5%    { background: rgba(90,160,255,0.20); box-shadow: none; }
-}
-
-.loader-grid .sq.active {
-  animation: sq-chase 1.2s linear infinite;
-}
-
-.loader-grid .sq.s0 { animation-delay:  0s; }
-.loader-grid .sq.s1 { animation-delay: -1.05s; }
-.loader-grid .sq.s2 { animation-delay: -0.90s; }
-.loader-grid .sq.s3 { animation-delay: -0.75s; }
-.loader-grid .sq.s4 { animation-delay: -0.60s; }
-.loader-grid .sq.s5 { animation-delay: -0.45s; }
-.loader-grid .sq.s6 { animation-delay: -0.30s; }
-.loader-grid .sq.s7 { animation-delay: -0.15s; }
-
-.loader-grid .sq.center {
-  background: transparent !important;
-  animation: none !important;
-  box-shadow: none !important;
-}
-
-.loader-label {
-  font-size: 12px;
-  color: rgba(234,234,234,.35);
-  letter-spacing: .8px;
-  font-family: system-ui, -apple-system, sans-serif;
-}
-
-/* コンテンツ側：ローディング中は不可視 */
-#resultGrid.is-loading {
-  opacity: 0;
-}
-
-#resultGrid.is-ready {
-  opacity: 1;
-  transition: opacity 0.35s ease;
-}
-
-/* 展開パネルのランクテキスト */
-.team-rank {
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(234,234,234,.50);
-  flex-shrink: 0;
-  white-space: nowrap;
-  min-width: 22px;
-}
-
-/* 履歴展開パネル：アイコン | ランク | 名前 の3カラム */
-.team-row.rank-inline {
-  grid-template-columns: 22px 28px 1fr;
-  gap: 6px;
-}
-
-.team-row.rank-inline .team-rank {
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(234,234,234,.45);
-  white-space: nowrap;
-  text-align: center;
-  letter-spacing: -0.3px;
-  flex-shrink: 0;
+.footer-links a:hover {
+  color: rgba(234,234,234,.85);
 }

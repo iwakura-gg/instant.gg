@@ -5,6 +5,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Instant.gg</title>
+  <meta property="og:title" content="Instant.gg" />
+  <meta property="og:description" content="League of Legends サモナー検索" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://instant-gg.onrender.com" />
+  <meta name="description" content="League of Legends サモナーのランク・試合履歴・KDA・チャンピオン統計を確認できます。" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Instant.gg - LoL サモナー検索" />
+  <meta name="twitter:description" content="ランク・試合履歴をすばやく確認。シンプルで高速なLoLサモナー検索サイト。" />
   <link rel="stylesheet" href="/style.css" />
 </head>
 
@@ -19,6 +27,22 @@
     </header>
 
     <div id="status" hidden></div>
+
+    <!-- ローディングオーバーレイ -->
+    <div id="loading-overlay" class="gone">
+      <div class="loader-grid">
+        <div class="sq active s0"></div>
+        <div class="sq active s1"></div>
+        <div class="sq active s2"></div>
+        <div class="sq active s7"></div>
+        <div class="sq center"></div>
+        <div class="sq active s3"></div>
+        <div class="sq active s6"></div>
+        <div class="sq active s5"></div>
+        <div class="sq active s4"></div>
+      </div>
+      <div class="loader-label">Instant.gg</div>
+    </div>
 
     <div class="result-grid" id="resultGrid">
       <div id="summary"></div>

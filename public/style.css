@@ -2273,3 +2273,21 @@ body {
   opacity: 1;
   transition: opacity 0.35s ease;
 }
+
+/* ===========================================
+   履歴展開パネル：ランクバッジ付き3カラム
+   =========================================== */
+.team-row.rank-inline {
+  grid-template-columns: 22px 28px 1fr;
+  gap: 6px;
+}
+
+.team-row.rank-inline .team-rank {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(234,234,234,.45);
+  white-space: nowrap;
+  text-align: center;
+  letter-spacing: -0.3px;
+  flex-shrink: 0;
+}

@@ -991,7 +991,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     host.innerHTML = `
       <div class="side-card">
-        <div class="side-title">チャンピオン統計（直近20戦）</div>
+        <div class="side-title">直近の使用チャンピオン</div>
         <div class="duo-head" aria-hidden="true">
           <div class="duo-h-icon"></div>
           <div class="duo-h-name">チャンピオン</div>

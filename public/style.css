@@ -450,7 +450,6 @@ body {
 }
 
 .g-result {
-  margin-top: auto;
   font-weight: 900;
   font-size: 13px;
 }
@@ -566,7 +565,6 @@ body {
 }
 
 .item-slot-role {
-  margin-left: 4px;
   border-color: rgba(255, 200, 90, .35);
 }
 
@@ -932,127 +930,21 @@ body {
     font-size: 14px;
   }
 
-  /* ===== 履歴カード（スマホ配置） ===== */
-  .game-card:not(.live) .card-top {
-    display: grid !important;
-    grid-template-columns: 88px 1fr 92px;
-    align-items: center;
-    gap: 8px 10px;
-    padding: 10px 10px 12px;
-    min-height: 0;
-  }
-
-  /* ✅ contents をやめて、各ブロックを「そのまま」置く */
-  .game-card:not(.live) .g-meta,
-  .game-card:not(.live) .g-main,
-  .game-card:not(.live) .g-stats {
-    display: flex !important;
-  }
-
-  /* 左メタ（キュー/時間/勝敗/試合時間） */
-  .game-card:not(.live) .g-meta {
-    grid-column: 1;
-    grid-row: 1;
-    width: auto;
-    padding: 0;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  /* 中央（チャンプ+スペル/ルーン+KDA+アイテム） */
-  .game-card:not(.live) .g-main {
-    grid-column: 2;
-    grid-row: 1;
-    padding: 0;
-    min-width: 0;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* ✅ KDAを消さない */
-  .game-card:not(.live) .kda {
-    display: block !important;
-  }
-
-  /* アイテム：KDAの隣に寄せる */
-  .game-card:not(.live) .items {
-    margin-left: 6px !important;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-  }
-
-  /* 右（KP/CS + ▾ボタン） */
-  .game-card:not(.live) .g-stats {
-    grid-column: 3;
-    grid-row: 1;
-    width: auto;
-    padding: 0;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    gap: 4px;
-  }
-
-  .game-card:not(.live) .chev {
-    margin-top: auto;
-  }
+  /* card-top のレイアウトは上部の density system（clamp変数 + flex-wrap）に
+     一本化したため、ここでの display:grid による強制上書きは廃止した。 */
 }
 
-/* さらに狭い幅：見切れ防止 */
+/* さらに狭い幅：見切れ防止（文字サイズのみ調整、幅はclamp変数側で対応） */
 @media (max-width: 430px) {
-  .game-card:not(.live) .card-top {
-    grid-template-columns: 80px 1fr 78px;
-    gap: 6px 8px;
-    padding: 10px 8px 12px;
-  }
-
   .game-card:not(.live) .stat {
     font-size: 10px;
-  }
-
-  .game-card:not(.live) .items {
-    gap: 3px;
-  }
-
-  .game-card:not(.live) .item-slot {
-    width: 20px;
-    height: 20px;
-    border-radius: 7px;
-  }
-
-  .game-card:not(.live) .item-slot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 }
 
 @media (max-width: 380px) {
-  .game-card:not(.live) .card-top {
-    grid-template-columns: 70px 1fr 72px;
-    gap: 5px 6px;
-    padding: 9px 8px 11px;
-  }
-
   .game-card:not(.live) .g-queue,
   .game-card:not(.live) .g-result {
     font-size: 11px;
-  }
-
-  .game-card:not(.live) .items {
-    gap: 2px;
-  }
-
-  .game-card:not(.live) .item-slot {
-    width: 18px;
-    height: 18px;
-    border-radius: 6px;
-  }
-
-  .game-card:not(.live) .item-slot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 }
 
@@ -1202,93 +1094,13 @@ body {
   margin-top: 2px;
 }
 
-/* =========================
-   PC：カード内部を少し詰めて
-   アイテムがKP/CSに被らないようにする
-   ========================= */
-@media (min-width: 761px) {
+/* カード内部の各要素サイズは、上部の density system
+   （clamp() + cqw、カード自身の幅基準）に統合したため、
+   761px時点での固定値ジャンプは廃止した。 */
 
-  /* 左メタを少し細く */
-  .g-meta {
-    width: 75px;
-    padding: 10px 8px 10px 10px;
-  }
-
-  /* 右statsも少し細くして、中央に幅を返す */
-  .g-stats {
-    width: 50px;
-    padding: 10px 10px 10px 8px;
-  }
-
-  /* 中央を全体的に詰める */
-  .g-main {
-    padding: 8px;
-    gap: 8px;
-  }
-
-  /* チャンプ+SRブロックを少し詰める */
-  .champ-wrap {
-    gap: 8px;
-  }
-
-  .champ-icon-box {
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
-  }
-
-  .champ-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 13px;
-  }
-
-  .sr-box {
-    gap: 4px;
-  }
-
-  .sr-col {
-    gap: 3px;
-  }
-
-  .icon18 {
-    width: 16px;
-    height: 16px;
-    border-radius: 5px;
-  }
-
-  /* KDAの横幅も少し削る */
-  .kda {
-    min-width: 65px;
-  }
-
-  .kda-line {
-    font-size: 15px;
-  }
-
-  /* アイテムを「左に戻す」＆小さくして確実に収める */
-  .items {
-    margin-left: 0;
-    flex-wrap: nowrap;
-    gap: 4px;
-  }
-
-  .item-slot {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
-  }
-
-  .item-slot img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-  }
-}
-
-/* ===== Result：左(side)と右(matches)の開始位置を揃える ===== */
-@media (min-width: 761px) {
+/* ===== Result：左(side)と右(matches)の開始位置を揃える
+   （2カラムで横並びになる901px以上でのみ必要な調整） ===== */
+@media (min-width: 901px) {
   .result-grid {
     align-items: start;
   }
@@ -1321,91 +1133,8 @@ body {
   }
 }
 
-/* =========================
-   <=760px：LIVEカードのヘッダーも履歴と同じ3カラムにして開始位置を揃える
-   ========================= */
-@media (max-width: 760px) {
-  .game-card.live .card-top {
-    display: grid !important;
-    grid-template-columns: 96px 1fr 92px;
-    /* 履歴と同じ */
-    align-items: center;
-    gap: 8px 10px;
-    padding: 10px 10px 12px;
-    min-height: 0;
-  }
-
-  .game-card.live .g-queue,
-  .game-card.live .g-result {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .game-card.live .g-meta,
-  .game-card.live .g-main,
-  .game-card.live .g-stats {
-    display: flex !important;
-  }
-
-  .game-card.live .g-meta {
-    grid-column: 1;
-    grid-row: 1;
-    width: auto;
-    padding: 0;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .game-card.live .g-main {
-    grid-column: 2;
-    grid-row: 1;
-    padding: 0;
-    min-width: 0;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .game-card.live .g-stats {
-    grid-column: 3;
-    grid-row: 1;
-    width: auto;
-    padding: 0;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    gap: 4px;
-  }
-
-  .game-card.live .chev {
-    margin-top: auto;
-  }
-}
-
-/* =========================================================
-   Tablet(641-900)：右カラムを約60%に縮めて、アイテムを1列固定
-   ========================================================= */
-@media (min-width: 641px) and (max-width: 900px) {
-
-  /* 右（KP/CS/経過 + ▾）の取りすぎを抑える */
-  .game-card .g-stats {
-    width: 112px;
-    padding: 10px 6px 10px 4px;
-  }
-
-  /* 履歴カード：アイテムを2段にしない */
-  .game-card:not(.live) .items {
-    flex-wrap: nowrap;
-    /* 1列固定 */
-    gap: 4px;
-    /* 少し詰める */
-  }
-
-  /* 1列固定をより安定させる（アイテムが縮んだり折り返し判定しづらくする） */
-  .game-card:not(.live) .item-slot {
-    flex: 0 0 28px;
-  }
-}
+/* LIVEカードのレイアウトも通常カードと同じ density system
+   （clamp変数 + flex-wrap）に統一したため、個別のgrid化は廃止した。 */
 
 /* サモナーネームが長いときだけ 2px 小さく */
 .summary-title.is-long-name {
@@ -1453,72 +1182,9 @@ body {
   }
 }
 
-@media (max-width: 640px) {
-
-  /* g-mainを折り返し可能に */
-  .g-main {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  /* 上段：キャラ＋KDA */
-  .champ-wrap,
-  .kda {
-    flex: 0 0 auto;
-  }
-
-  /* アイテムを2行目に */
-  .items {
-    flex: 0 0 100%;
-    margin-top: 6px;
-  }
-
-}
-
-
-/* スマホレイアウト用 */
-
-/* ===========================
-   📱 420px以下は強制2行レイアウト
-   =========================== */
-@media (max-width: 420px) {
-
-  /* メイン部分をGrid化 */
-  .g-main {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      "champ kda"
-      "items items";
-    align-items: center;
-    column-gap: 10px;
-    row-gap: 6px;
-  }
-
-  /* 各エリア割り当て */
-  .champ-wrap {
-    grid-area: champ;
-  }
-
-  .kda {
-    grid-area: kda;
-    text-align: left;
-    justify-self: start;
-  }
-
-  .items {
-    grid-area: items;
-    margin-top: 2px;
-  }
-
-  /* 横幅計算の事故防止 */
-  .champ-wrap,
-  .kda,
-  .items {
-    min-width: 0;
-  }
-
-}
+/* g-main の折り返し・アイテムのgrid-area制御は上部の density system
+   （clamp変数 + flex-wrap + items:auto-fit grid）に統合したため、
+   ここでの個別ブレークポイント制御は廃止した。 */
 
 
 @media (max-width: 500px) {
@@ -1576,7 +1242,8 @@ body {
 
 
 .g-meta {
-  gap: 8px;
+  gap: 5px;
+  justify-content: center;
 }
 
 .g-queue,
@@ -1719,30 +1386,54 @@ body {
 }
 
 /* =========================
-   Match card density system
-   - LIVE/ノーマル共通で効かせる
+   Match card density system（流体化）
+   - ブレークポイントで段階的に切り替えるのではなく、
+     clamp()で連続的にサイズが変わるようにする
+   - 画面幅(vw)ではなく「カード自身の幅(cqw)」を基準にする。
+     サイドパネルがある分、画面幅とカード幅は一致しないため。
    ========================= */
 :root {
-  /* ページ左右余白（スマホで“余白があるように見える”の主因にもなる） */
-  --page-pad: 16px;
+  --page-pad: clamp(8px, 2vw, 16px);
+}
 
-  /* 履歴カード：左メタ / 右stats / 中央padding */
-  --meta-w: 75px;
+.card-top {
+  /* PC・タブレット共通：固定値（ここでは縮小させない） */
+  --meta-w: 84px;
   --meta-px-l: 10px;
   --meta-px-r: 8px;
 
-  --stats-w: 132px;
+  --stats-w: 90px;
   --stats-px-l: 6px;
-  --stats-px-r: 10px;
+  --stats-px-r: 8px;
 
   --main-px-l: 10px;
   --main-px-r: 6px;
-
   --main-gap: 10px;
 
   /* アイテム */
-  --item: 28px;
-  --item-gap: 4px;
+  --item: clamp(18px, 4.4cqw, 28px);
+  --item-gap: clamp(3px, 1cqw, 4px);
+
+  /* キャラアイコン・スペル/ルーンアイコン */
+  --champ-size: clamp(36px, 8cqw, 52px);
+  --spell-size: clamp(14px, 2.8cqw, 18px);
+}
+
+/* スマホ帯（560px以下）だけ、左右カラムも縮める */
+@container (max-width: 560px) {
+  .card-top {
+    --meta-w: clamp(64px, 14cqw, 84px);
+    --meta-px-l: clamp(6px, 2cqw, 10px);
+    --meta-px-r: clamp(4px, 1.4cqw, 8px);
+
+    --stats-w: clamp(70px, 18cqw, 132px);
+    --stats-px-l: clamp(4px, 1.2cqw, 6px);
+    --stats-px-r: clamp(6px, 1.6cqw, 10px);
+
+    --main-px-l: clamp(6px, 1.6cqw, 10px);
+    --main-px-r: clamp(4px, 1.2cqw, 6px);
+    --main-gap: clamp(6px, 2cqw, 10px);
+  }
 }
 
 /* page の左右余白も変数化（スマホで余白感が出るならここが効く） */
@@ -1750,159 +1441,164 @@ body {
   padding: var(--page-pad);
 }
 
-/* 履歴カード（LIVE含む）共通化 */
+/* 履歴カード（LIVE含む）共通化：card-topは常にflexのまま、
+   幅は変数(clamp)だけで滑らかに変化させる。
+   card-top自体をコンテナ化し、アイテム欄の段数は
+   「カード自身の幅」だけで決める（キャラ/スペルの内容量に左右されない） */
+.card-top {
+  display: flex;
+  container-type: inline-size;
+}
+
 .game-card .g-meta {
+  flex: 0 0 var(--meta-w);
   width: var(--meta-w);
   padding: 10px var(--meta-px-r) 10px var(--meta-px-l);
 }
 
 .game-card .g-stats {
+  flex: 0 0 var(--stats-w);
   width: var(--stats-w);
   padding: 10px var(--stats-px-r) 10px var(--stats-px-l);
 }
 
 .game-card .g-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   padding: 10px var(--main-px-r) 10px var(--main-px-l);
   gap: var(--main-gap);
 }
 
 .game-card .items {
+  row-gap: 4px;
+}
+
+.game-card:not(.live) .items {
+  min-width: 0;
+}
+
+.game-card .champ-kda {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--main-gap);
+}
+
+.game-card .champ-wrap,
+.game-card .kda {
+  flex: 0 0 auto;
+}
+
+/* キャラアイコン・スペル/ルーンアイコンも761px等の固定ジャンプをやめ、
+   カード幅(cqw)に応じて連続的に変化させる */
+.game-card .champ-icon-box {
+  width: var(--champ-size);
+  height: var(--champ-size);
+  flex: 0 0 var(--champ-size);
+}
+
+.game-card .champ-icon {
+  width: var(--champ-size);
+  height: var(--champ-size);
+}
+
+.game-card .icon18 {
+  width: var(--spell-size);
+  height: var(--spell-size);
+}
+
+/* 状態1（デフォルト）：キャラ+KDAと同じ行に自然な並びで続く
+   （伸び縮みさせない＝狭い時にKDAへ食い込んで衝突するのを防ぐ） */
+.game-card .items {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   gap: var(--item-gap);
 }
 
 .game-card .item-slot {
   width: var(--item);
   height: var(--item);
+  flex: 0 0 auto;
 }
 
-/* =========================
-   Density variables (page/card)
-   ========================= */
-@media (min-width: 901px) {
-  :root {
-    --page-pad: 16px;
-    --meta-w: 75px;
-    --stats-w: 132px;
-    --main-px-l: 10px;
-    --main-px-r: 6px;
-    --main-gap: 10px;
-    --item: 28px;
-    --item-gap: 4px;
+/* 状態2：カード幅が足りなくなったらアイテムを次の行に落とす（1行8個のまま） */
+@container (max-width: 560px) {
+  .game-card:not(.live) .g-main {
+    flex-wrap: wrap;
+  }
+
+  .game-card:not(.live) .items {
+    flex-basis: 100%;
+    justify-content: flex-start;
+    margin-top: 4px;
   }
 }
 
-@media (max-width: 900px) {
-  :root {
-    --page-pad: 10px;
-
-    --meta-w: 74px;
-    --stats-w: 120px;
-
-    --main-px-l: 10px;
-    --main-px-r: 10px;
-    /* 右だけ細いのをやめる */
-    --main-gap: 9px;
-
-    --item: 26px;
-    --item-gap: 4px;
+/* 状態3：280px以下ではアイテムを4個×2行に分割し、
+   キャラ+スペル+KDAは必ず1行に収まるよう少し小さくする */
+@container (max-width: 280px) {
+  .game-card:not(.live) .items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: initial;
   }
-}
 
-@media (max-width: 420px) {
-  :root {
-    --page-pad: 8px;
-
-    --meta-w: 70px;
-    --stats-w: 104px;
-
-    --main-px-l: 8px;
-    --main-px-r: 8px;
-    --main-gap: 8px;
-
-    --item: 22px;
-    --item-gap: 3px;
+  .game-card:not(.live) .item-slot {
+    width: auto;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
   }
-}
 
-/* <=420px で g-main の grid化を止めて縦長化を防ぐ */
-@media (max-width: 420px) {
-  .game-card .g-main {
-    display: flex !important;
+  .game-card:not(.live) .champ-wrap {
+    gap: 4px;
   }
-}
 
-
-/* =========================
-   g-meta responsive (width + padding)
-   ========================= */
-
-/* 901px以上（PC） */
-@media (min-width: 901px) {
-  .game-card .g-meta {
-    width: 72px;
-    /* 例：少し広め */
-    padding: 10px 8px 10px 10px;
+  .game-card:not(.live) .champ-icon-box {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
   }
-}
 
-/* 900px以下（タブレット〜スマホ） */
-@media (max-width: 900px) {
-  .game-card .g-meta {
-    width: 84px;
-    /* 「ソロランク」等が2行に折り返さない幅を確保 */
-    padding: 10px 8px 10px 8px;
+  .game-card:not(.live) .champ-icon {
+    width: 36px;
+    height: 36px;
   }
-}
 
-/* 420px以下（小さいスマホ） */
-@media (max-width: 420px) {
-  .game-card .g-meta {
-    width: 46px;
-    /* 例：さらに細く */
-    padding: 8px 6px 9px 6px;
+  .game-card:not(.live) .sr-box {
+    gap: 3px;
   }
-}
 
-/* 320px以下（小さいスマホ） */
-@media (max-width: 320px) {
-  .game-card .g-meta {
-    width: 64px;
-    /* 「ソロランク」が折り返さない最低限の幅 */
-    padding: 6px 4px 9px 6px;
+  .game-card:not(.live) .sr-col {
+    gap: 2px;
+  }
+
+  .game-card:not(.live) .icon18 {
+    width: 14px;
+    height: 14px;
+  }
+
+  .game-card:not(.live) .kda {
+    min-width: 0;
+  }
+
+  .game-card:not(.live) .kda-line {
+    font-size: 13px;
+  }
+
+  .game-card:not(.live) .kda-sub {
+    font-size: 10px;
   }
 }
 
 
-/* =========================
-   card-top column widths (history cards)
-   ========================= */
-
-/* 900px以下：1カラム寄り（必要なら少しだけ調整） */
-@media (max-width: 900px) {
-
-  .game-card:not(.live) .card-top,
-  .game-card.live .card-top {
-    grid-template-columns: 64px 1fr 50px;
-  }
-}
-
-/* 420px以下：縦長にならない程度に“詰める” */
-@media (max-width: 420px) {
-
-  .game-card:not(.live) .card-top,
-  .game-card.live .card-top {
-    grid-template-columns: 52px 1fr 50px;
-  }
-}
-
-/* 320px以下：縦長にならない程度に“詰める” */
-@media (max-width: 320px) {
-
-  .game-card:not(.live) .card-top,
-  .game-card.live .card-top {
-    grid-template-columns: 68px 1fr 50px;
-  }
-}
+/* g-meta / card-top の幅はすべて上部の clamp() 変数(--meta-w等)に統合済み。
+   個別ブレークポイントでの上書きは廃止した。 */
 
 /* 右列：KP/CSは左揃え、展開ボタンだけ右寄せ */
 .g-stats {
@@ -1947,37 +1643,8 @@ body {
 }
 
 
-/* =========================
-   FIX <=420px: prevent items from overflowing right
-   - Keep champ + KDA on first row
-   - Move items to a second line inside g-main
-   ========================= */
-@media (max-width: 420px) {
-
-  /* apply to history cards and LIVE header */
-  .game-card:not(.live) .g-main,
-  .game-card.live .g-main {
-    flex-wrap: wrap;
-  }
-
-  .game-card:not(.live) .items,
-  .game-card.live .items {
-    flex: 0 0 100%;
-    margin-left: 0 !important;
-    margin-top: 6px;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    /* keep items in one row; now they have full width */
-    gap: 3px;
-  }
-
-  .game-card:not(.live) .item-slot,
-  .game-card.live .item-slot {
-    width: 20px;
-    height: 20px;
-    border-radius: 7px;
-  }
-}
+/* items の折り返し・サイズは上部の density system
+   （clamp変数 + auto-fit grid）に統合したため、この個別上書きは廃止した。 */
 
 /* =========================
    FIX: KP / CS left, expand button right (mobile too)
@@ -2004,25 +1671,8 @@ body {
   }
 }
 
-/* =========================
-   FORCE g-stats width by breakpoint
-   ========================= */
-
-/* 901px以上（PC） */
-@media (min-width: 901px) {
-  .game-card .g-stats {
-    width: 90px !important;
-    /* ←好きな値に */
-  }
-}
-
-/* 900px以下（タブレット帯：641〜900想定） */
-@media (min-width: 641px) and (max-width: 900px) {
-  .game-card .g-stats {
-    width: 90px !important;
-    /* ←好きな値に */
-  }
-}
+/* g-stats の幅も上部の clamp() 変数(--stats-w)に統合済みのため、
+   個別ブレークポイントでの固定幅指定は廃止した。 */
 
 /* =========================
    >=901px: KP/CS left, expand button right
@@ -2114,30 +1764,8 @@ body {
   }
 }
 
-/* =========================================
-   History cards: center the middle column in 3-col layout
-   (applies when card-top is grid: <=900px in your current setup)
-   ========================================= */
-@media (max-width: 900px) {
-
-  /* 「履歴だけ」= :not(.live) */
-  .game-card:not(.live) .g-main {
-    justify-content: center;
-    /* 中央カラム内で左右中央 */
-  }
-
-  /* ついでに “中の塊(チャンプ+SR+KDA+アイテム)” を中央に寄せる */
-  .game-card:not(.live) .champ-wrap {
-    justify-content: center;
-  }
-
-  /* アイテム行も中央にしたいなら（好みで） */
-  .game-card:not(.live) .items {
-    justify-content: center;
-    margin-left: 0;
-    /* 左に押し出す癖がある場合の相殺 */
-  }
-}
+/* g-main/items の揃え方は上部のコンテナクエリ方式に統一したため、
+   ここでの viewport ベースの中央寄せは廃止した。 */
 
 /* =========================
    Mobile: make footer sit below a full-height home page
@@ -2317,62 +1945,4 @@ body {
   text-align: center;
   letter-spacing: -0.3px;
   flex-shrink: 0;
-}
-
-/* =========================================================
-   アイテム欄8マス対応：幅に応じた行数切り替え
-   - 641px〜　　　：1列 [キャラ+スペル / KDA / アイテム8]（横並び）
-   - 281〜640px  ：2列 [キャラ+スペル+KDA] の下に [アイテム8を1行]
-   - 〜280px     ：3列 [キャラ+スペル+KDA] の下に [アイテム4]×2行
-   既存の古いルールと衝突しないよう、最後に!importantで確定させる
-   ========================================================= */
-@media (max-width: 640px) {
-  .game-card:not(.live) .g-main {
-    display: grid !important;
-    grid-template-columns: auto 1fr !important;
-    grid-template-areas:
-      "champ kda"
-      "items items" !important;
-    align-items: center !important;
-    column-gap: 10px !important;
-    row-gap: 6px !important;
-  }
-
-  .game-card:not(.live) .champ-wrap {
-    grid-area: champ !important;
-  }
-
-  .game-card:not(.live) .kda {
-    grid-area: kda !important;
-    text-align: left !important;
-    justify-self: start !important;
-  }
-
-  .game-card:not(.live) .items {
-    grid-area: items !important;
-    flex-wrap: nowrap !important;
-    justify-content: flex-start !important;
-    margin-left: 0 !important;
-    margin-top: 4px !important;
-  }
-
-  .game-card:not(.live) .champ-wrap,
-  .game-card:not(.live) .kda,
-  .game-card:not(.live) .items {
-    min-width: 0 !important;
-  }
-}
-
-@media (max-width: 380px) {
-  .game-card:not(.live) .items {
-    flex-wrap: wrap !important;
-    row-gap: 4px !important;
-  }
-
-  .game-card:not(.live) .item-slot {
-    flex: 0 0 calc(25% - 3px) !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
-    margin-left: 0 !important;
-  }
 }

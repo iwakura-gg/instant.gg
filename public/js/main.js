@@ -712,18 +712,27 @@ window.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  function itemsBlock(ddragon, items) {
+  function itemsBlock(ddragon, items, roleBoundItem) {
     const base = `https://ddragon.leagueoflegends.com/cdn/${ddragon}/img/item/`;
     const arr = Array.isArray(items) ? items : [];
+    const roleId = Number(roleBoundItem || 0);
+
+    const normalSlots = Array.from({ length: 7 })
+      .map((_, i) => {
+        const id = Number(arr[i] || 0);
+        if (!id) return `<div class="item-slot"></div>`;
+        return `<div class="item-slot"><img src="${base}${id}.png" loading="lazy" onerror="this.style.display='none'"></div>`;
+      })
+      .join("");
+
+    // ✅ ロールクエスト報酬アイテム（コントロールワード枠／ブーツ枠など）を8マス目として表示
+    const roleSlot = roleId
+      ? `<div class="item-slot item-slot-role"><img src="${base}${roleId}.png" loading="lazy" onerror="this.style.display='none'"></div>`
+      : `<div class="item-slot item-slot-role"></div>`;
+
     return `
       <div class="items">
-        ${Array.from({ length: 7 })
-        .map((_, i) => {
-          const id = Number(arr[i] || 0);
-          if (!id) return `<div class="item-slot"></div>`;
-          return `<div class="item-slot"><img src="${base}${id}.png" loading="lazy" onerror="this.style.display='none'"></div>`;
-        })
-        .join("")}
+        ${normalSlots}${roleSlot}
       </div>
     `;
   }
@@ -1260,7 +1269,7 @@ window.addEventListener("DOMContentLoaded", () => {
       spellMap,
       runeIdToIcon
     );
-    const items = itemsBlock(ddragon, m.items || []);
+    const items = itemsBlock(ddragon, m.items || [], m.roleBoundItem);
 
     const card = document.createElement("div");
     const isRemake = !!m.remake;

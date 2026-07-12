@@ -437,8 +437,11 @@ app.get("/api/match/:matchId/:puuid", async (req, res) => {
   const teamKills = myTeam.reduce((sum, p) => sum + (p.kills || 0), 0);
   const kp = teamKills > 0 ? (me.kills + me.assists) / teamKills : null;
 
-  const items = [me.item0, me.item1, me.item2, me.item3, me.item4, me.item5, me.item6, me.item7].filter((x) => x !== undefined).map((x) => Number(x || 0));
-  console.log('ITEM_DEBUG', JSON.stringify(Object.fromEntries(Object.entries(me).filter(([k]) => k.toLowerCase().includes('item')))));
+  const items = [me.item0, me.item1, me.item2, me.item3, me.item4, me.item5, me.item6].map((x) => Number(x || 0));
+
+  // ✅ ロールクエスト報酬アイテム（サポートのコントロールワード枠／BOTのブーツ枠など）
+  // item0〜6とは別枠のフィールドとしてRiot APIから返ってくる（26.1〜）
+  const roleBoundItem = Number(me.roleBoundItem || 0);
 
   let keystoneId = null;
   let subStyleId = null;
@@ -475,6 +478,7 @@ app.get("/api/match/:matchId/:puuid", async (req, res) => {
     kp,
 
     items,
+    roleBoundItem,
   });
 });
 

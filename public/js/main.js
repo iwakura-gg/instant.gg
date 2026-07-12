@@ -1290,17 +1290,19 @@ window.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div class="g-main">
-          <div class="champ-wrap">
-            <div class="champ-icon-box">
-              <img class="champ-icon" src="${champIcon}" loading="lazy" onerror="this.style.display='none'">
-              <div class="champ-lv">${escapeHtml(m.champLevel)}</div>
+          <div class="champ-kda">
+            <div class="champ-wrap">
+              <div class="champ-icon-box">
+                <img class="champ-icon" src="${champIcon}" loading="lazy" onerror="this.style.display='none'">
+                <div class="champ-lv">${escapeHtml(m.champLevel)}</div>
+              </div>
+              <div class="sr">${sr}</div>
             </div>
-            <div class="sr">${sr}</div>
-          </div>
 
-          <div class="kda">
-            <div class="kda-line">${escapeHtml(m.kills)}/${escapeHtml(m.deaths)}/${escapeHtml(m.assists)}</div>
-            <div class="kda-sub">KDA<span class="${kdaClass}">${escapeHtml(ratio)}:1</span></div>
+            <div class="kda">
+              <div class="kda-line">${escapeHtml(m.kills)}/${escapeHtml(m.deaths)}/${escapeHtml(m.assists)}</div>
+              <div class="kda-sub">KDA<span class="${kdaClass}">${escapeHtml(ratio)}:1</span></div>
+            </div>
           </div>
 
           ${items}

@@ -1306,6 +1306,10 @@ body {
   margin-bottom: 12px;
 }
 
+#sideDuoHost {
+  margin-bottom: 12px;
+}
+
 /* =========================
    FIX: 760付近でLIVE展開のチャンプが右にズレすぎるのを防ぐ
    - 以前追加した .details の左padding調整を無効化

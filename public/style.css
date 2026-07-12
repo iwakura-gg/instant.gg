@@ -1634,6 +1634,7 @@ body {
   .page.result #summary,
   #summary {
     grid-column: 1 / -1;
+    order: 1;
   }
 
   /* side を contents にして、子要素を直接配置できるようにする */
@@ -1645,29 +1646,33 @@ body {
   /* 上段：ランク（単独で全幅） */
   #sideRankHost {
     grid-column: 1 / -1;
+    order: 2;
+  }
+
+  /* 試合履歴を優先表示：サモナー/チャンピオン統計より上に */
+  .page.result #matches,
+  #matches {
+    grid-column: 1 / -1;
+    order: 3;
   }
 
   /* 下段左：一緒にプレイしたサモナー */
   #sideDuoHost {
     grid-column: 1;
     height: 100%;
+    order: 4;
   }
 
   /* 下段右：チャンピオン統計 */
   #sideChampHost {
     grid-column: 2;
     height: 100%;
+    order: 5;
   }
 
   #sideDuoHost .side-card,
   #sideChampHost .side-card {
     height: 100%;
-  }
-
-  /* 下：LIVE + 履歴（matchesは全幅） */
-  .page.result #matches,
-  #matches {
-    grid-column: 1 / -1;
   }
 }
 

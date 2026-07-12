@@ -308,6 +308,8 @@ body {
   width: 56px;
   height: 56px;
   border-radius: 14px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .summary-right {
@@ -817,11 +819,7 @@ body {
     display: none;
   }
 
-  /* summary：縦並び */
-  .summary-sub {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  /* Solo/Flexのピルの縦並びは500px以下（スマホ）専用に移動した */
 
   /* LIVE展開：スマホは下に回す（LIVEだけ） */
   .game-card.live .details .team-row.has-rank {
@@ -869,29 +867,11 @@ body {
     min-height: 0;
   }
 
-  .champ-icon-box {
-    width: 46px;
-    height: 46px;
-    flex: 0 0 46px;
-  }
-
-  .champ-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-  }
-
   .champ-lv {
     font-size: 11px;
     padding: 2px 6px;
     right: -5px;
     bottom: -5px;
-  }
-
-  .icon18 {
-    width: 16px;
-    height: 16px;
-    border-radius: 5px;
   }
 
   .sr-box {
@@ -902,27 +882,6 @@ body {
     gap: 3px;
   }
 
-  /* いったん全カード共通のアイテム並び（履歴側で上書きあり） */
-  .items {
-    flex-wrap: nowrap;
-    gap: 4px;
-    margin-left: auto;
-    justify-content: flex-end;
-  }
-
-  .item-slot {
-    width: 24px;
-    height: 24px;
-    border-radius: 8px;
-  }
-
-  .item-slot img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-  }
-
   .chev {
     width: 30px;
     height: 30px;
@@ -931,7 +890,10 @@ body {
   }
 
   /* card-top のレイアウトは上部の density system（clamp変数 + flex-wrap）に
-     一本化したため、ここでの display:grid による強制上書きは廃止した。 */
+     一本化したため、ここでの display:grid による強制上書きは廃止した。
+     items / item-slot / champ-icon-box / champ-icon / icon18 のサイズ・寄せ指定も
+     density system（--item, --champ-size, --spell-size, cqw基準）に統合済みのため、
+     ここでの個別指定（margin-left:auto 等）は撤去した。 */
 }
 
 /* さらに狭い幅：見切れ防止（文字サイズのみ調整、幅はclamp変数側で対応） */
@@ -1007,8 +969,11 @@ body {
   grid-column: 2;
 }
 
-/* スマホは1カラムに落とす（上：summary → side → matches） */
-@media (max-width: 900px) {
+/* 1カラムに落とす（上：summary → side → matches）
+   ※ 971px未満で2カラムにすると、サイド列(280px)に押されて
+   試合カードの幅が一時的に足りなくなり、アイテムが2行に戻って
+   しまう瞬間があったため、1行を維持できる971pxまで1カラムを維持する */
+@media (max-width: 970px) {
   .page.result .result-grid {
     grid-template-columns: 1fr;
   }
@@ -1099,8 +1064,8 @@ body {
    761px時点での固定値ジャンプは廃止した。 */
 
 /* ===== Result：左(side)と右(matches)の開始位置を揃える
-   （2カラムで横並びになる901px以上でのみ必要な調整） ===== */
-@media (min-width: 901px) {
+   （2カラムで横並びになる971px以上でのみ必要な調整） ===== */
+@media (min-width: 971px) {
   .result-grid {
     align-items: start;
   }
@@ -1188,6 +1153,12 @@ body {
 
 
 @media (max-width: 500px) {
+
+  /* Solo/Flexのピルはスマホ幅だけ縦並び */
+  .summary-sub {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   /* 1カラム縦積み＆全幅に伸ばす */
   #resultGrid,
@@ -1397,18 +1368,21 @@ body {
 }
 
 .card-top {
+  display: flex;
+  container-type: inline-size;
+
   /* PC・タブレット共通：固定値（ここでは縮小させない） */
   --meta-w: 84px;
   --meta-px-l: 10px;
-  --meta-px-r: 8px;
+  --meta-px-r: 2px;
 
   --stats-w: 90px;
   --stats-px-l: 6px;
   --stats-px-r: 8px;
 
-  --main-px-l: 10px;
+  --main-px-l: 4px;
   --main-px-r: 6px;
-  --main-gap: 10px;
+  --main-gap: 6px;
 
   /* アイテム */
   --item: clamp(18px, 4.4cqw, 28px);
@@ -1424,30 +1398,21 @@ body {
   .card-top {
     --meta-w: clamp(64px, 14cqw, 84px);
     --meta-px-l: clamp(6px, 2cqw, 10px);
-    --meta-px-r: clamp(4px, 1.4cqw, 8px);
+    --meta-px-r: clamp(2px, 0.6cqw, 2px);
 
     --stats-w: clamp(70px, 18cqw, 132px);
     --stats-px-l: clamp(4px, 1.2cqw, 6px);
     --stats-px-r: clamp(6px, 1.6cqw, 10px);
 
-    --main-px-l: clamp(6px, 1.6cqw, 10px);
+    --main-px-l: clamp(2px, 0.8cqw, 4px);
     --main-px-r: clamp(4px, 1.2cqw, 6px);
-    --main-gap: clamp(6px, 2cqw, 10px);
+    --main-gap: clamp(4px, 1.6cqw, 6px);
   }
 }
 
 /* page の左右余白も変数化（スマホで余白感が出るならここが効く） */
 .page {
   padding: var(--page-pad);
-}
-
-/* 履歴カード（LIVE含む）共通化：card-topは常にflexのまま、
-   幅は変数(clamp)だけで滑らかに変化させる。
-   card-top自体をコンテナ化し、アイテム欄の段数は
-   「カード自身の幅」だけで決める（キャラ/スペルの内容量に左右されない） */
-.card-top {
-  display: flex;
-  container-type: inline-size;
 }
 
 .game-card .g-meta {
@@ -1618,90 +1583,41 @@ body {
 }
 
 /* =========================
-   g-stats alignment fixes
-   - 900↑は右揃え
-   - 420↓も右揃え（上書きされないように明示）
+   g-stats alignment
+   （KP/CSは常に左揃え、▾ボタンだけ右下に寄せる。
+   　以前は右揃え版と左揃え版の矛盾したルールが複数残っていたため整理した） 
    ========================= */
-
-/* 900px以上：右揃え */
-@media (min-width: 901px) {
-  .game-card .g-stats {
-    align-items: flex-end;
-    text-align: right;
-  }
+.game-card .g-stats {
+  align-items: flex-start;
+  text-align: left;
 }
 
-/* 420px以下：右揃え（スマホでも適用） */
-@media (max-width: 420px) {
-  .game-card .g-stats {
-    align-items: flex-end !important;
-    text-align: right !important;
-  }
-
-  /* もしstatだけ左揃えにしたい等、別方針ならここで分ける */
-  /* .game-card .g-stats .stat{ text-align:left; } */
+.game-card .g-stats .stat {
+  white-space: nowrap;
 }
 
-
-/* items の折り返し・サイズは上部の density system
-   （clamp変数 + auto-fit grid）に統合したため、この個別上書きは廃止した。 */
-
-/* =========================
-   FIX: KP / CS left, expand button right (mobile too)
-   ========================= */
-@media (max-width: 900px) {
-
-  /* stats列：KP/CSは左揃え */
-  .game-card:not(.live) .g-stats,
-  .game-card.live .g-stats {
-    align-items: flex-start !important;
-    text-align: left !important;
-  }
-
-  /* KP/CSは折り返し防止（任意だけどおすすめ） */
-  .game-card:not(.live) .g-stats .stat,
-  .game-card.live .g-stats .stat {
-    white-space: nowrap;
-  }
-
-  /* 展開ボタンだけ右寄せ */
-  .game-card:not(.live) .g-stats .chev,
-  .game-card.live .g-stats .chev {
-    align-self: flex-end !important;
-  }
-}
-
-/* g-stats の幅も上部の clamp() 変数(--stats-w)に統合済みのため、
-   個別ブレークポイントでの固定幅指定は廃止した。 */
-
-/* =========================
-   >=901px: KP/CS left, expand button right
-   ========================= */
-@media (min-width: 901px) {
-
-  /* KP/CS（.stat）を左揃えにする */
-  .game-card .g-stats {
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  /* ▾ボタンだけ右寄せ */
-  .game-card .g-stats .chev {
-    align-self: flex-end;
-  }
-
-  /* 念のため折り返し防止（必要なら） */
-  .game-card .g-stats .stat {
-    white-space: nowrap;
-  }
+.game-card .g-stats .chev {
+  align-self: flex-end;
 }
 
 /* =========================
-   501–900px: profile top, rank left / duo right, matches below
+   501–970px: profile top, rank left / duo right, matches below
    ========================= */
-@media (min-width: 501px) and (max-width: 900px) {
+@media (min-width: 501px) and (max-width: 970px) {
 
-  /* result-grid を 2カラムGridに戻す */
+  /* ヘッダーも下のコンテンツ（result-grid）と同じ幅・中央寄せに揃えて
+     左端がズレないようにする */
+  .page.result .top {
+    max-width: 700px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* result-grid を 2カラムGridに戻す。
+     幅いっぱいに引き伸ばさず、試合カードが1行に収まる程度の
+     幅（700px）に抑えて中央寄せにする。RANK/サモナー/チャンピオン
+     統計もこの同じ幅に揃う。 */
   .page.result .result-grid,
   #resultGrid {
     display: grid;
@@ -1709,6 +1625,9 @@ body {
     gap: 12px 14px;
     align-items: start;
     width: 100%;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* プロフィールは上で全幅 */
@@ -1723,19 +1642,26 @@ body {
     display: contents;
   }
 
-  /* 左：ランク */
+  /* 上段：ランク（単独で全幅） */
   #sideRankHost {
-    grid-column: 1;
-  }
-
-  /* 右：DUO */
-  #sideDuoHost {
-    grid-column: 2;
-  }
-
-  /* チャンピオン統計（ランク/DUOの下、履歴の上に全幅で表示） */
-  #sideChampHost {
     grid-column: 1 / -1;
+  }
+
+  /* 下段左：一緒にプレイしたサモナー */
+  #sideDuoHost {
+    grid-column: 1;
+    height: 100%;
+  }
+
+  /* 下段右：チャンピオン統計 */
+  #sideChampHost {
+    grid-column: 2;
+    height: 100%;
+  }
+
+  #sideDuoHost .side-card,
+  #sideChampHost .side-card {
+    height: 100%;
   }
 
   /* 下：LIVE + 履歴（matchesは全幅） */
@@ -1749,19 +1675,6 @@ body {
   height: 14px;
   line-height: 14px;
   visibility: hidden;
-}
-
-@media (min-width: 501px) and (max-width: 900px) {
-
-  #sideRankHost,
-  #sideDuoHost {
-    height: 100%;
-  }
-
-  #sideRankHost .side-card,
-  #sideDuoHost .side-card {
-    height: 100%;
-  }
 }
 
 /* g-main/items の揃え方は上部のコンテナクエリ方式に統一したため、
